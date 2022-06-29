@@ -7,6 +7,7 @@ var helpers=require('handlebars-helpers')
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var hbs = require('express-handlebars');
+const paypal = require('paypal-rest-sdk');
 
 var fileUpload = require('express-fileupload')
 
@@ -48,7 +49,7 @@ app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  res.render('user/error')
 });
 
 // error handler

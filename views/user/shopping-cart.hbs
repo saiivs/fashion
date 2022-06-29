@@ -27,13 +27,14 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>PRODUCT</th>
+                                    <th>QUANTITY</th>
+                                    <th>TOTAL</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#if products}}
                                 {{#each products}}   
                                 <tr>
                                     
@@ -54,6 +55,11 @@
                                     <td onclick="removePro('{{this._id}}','{{this.items}}')" class="cart__close"><i class="fa fa-close"></i></td>
                                 </tr>
                                 {{/each}}
+                                {{else}}
+                                <tr>
+                                    <td><h4 class="text-dark text-center font-weight-light">NO PRODUCTS IN THE CART</h4></td>
+                                </tr>
+                                {{/if}}
                                 {{!-- <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">
@@ -131,21 +137,30 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
+                            
                     <div class="cart__discount">
                         <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
-                            <button type="submit">Apply</button>
+                        <span class="text-danger" style="font-size: small;" id="ERR"></span>
+                            
+                        <form id="Coupon">
+                            
+                            <input type="text" id="CouponV" name="Coupon_Name" placeholder="Coupon code">
+                            <button onclick=" return Coupon()" type="submit">Apply</button>
                         </form>
                     </div>
                     <div class="cart__total">
-                        <h6>Cart total</h6>
+                        <h6>CART TOTAL</h6>
                         
                         <ul>
-                            <li>Subtotal <span id="hey" >{{total}}</span></li>
-                            <li>Total <span id="hai" >{{total}}</span></li>
+                            <li>TOTAL <span id="subtotal" >{{preDeduction}}</span></li>
+                            <li>OFFER <span id="off">{{offer}}</span><span>-</span></li>
+                           
+                            <li>COUPON <span id="Code">{{coupon}}</span><span>-</span></li>
+                           
+                            <hr>
+                            <li>SUBTOTAL <span id="total" >{{total}}</span></li>
                         </ul>
-                        <a href="/check-out" class="primary-btn">Proceed to checkout</a>
+                        <a href="/check-out" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
                 </div>
             </div>
@@ -230,5 +245,18 @@
         </div>
     </div>
     <!-- Search End -->
+
+    <script>
+        function Coupon(){
+            let ERR=document.getElementById('ERR')
+            let Coupon=document.getElementById('CouponV').value
+            if(Coupon==""){
+                ERR.innerHTML="PLEASE FILL THE COUPON"
+                return false;
+            }
+            ERR.innerHTML=""
+            return true
+        }
+    </script>
 
   

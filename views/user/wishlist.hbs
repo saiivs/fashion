@@ -21,7 +21,7 @@
                                             <a href="/ProDetails/{{this._id}}"><img style="width: 50px;" src="/pro-img/{{this._id}}.jpg" alt=""></a>
                                         </div>
                                         <div class="product__cart__item__text">
-                                            <h6>{{this.name}}</h6>
+                                            <h6>{{this.name}}&nbsp;&nbsp;<span class="text-success" style="font-size: small;" >{{#if offername}}{{this.offername}}%{{/if}}</span></h6>
                                             <a><button class="text-white rounded" style="border: none;background-color:rgba(1, 1, 17, 0.878);font-size: smaller;" onclick="addToCart('{{this._id}}')">+ Add to Cart</button></a>
                                             {{!-- <h5>₹{{this.price}}</h5> --}}
                                         </div>

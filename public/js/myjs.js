@@ -1,5 +1,7 @@
 // const func = require("../../helper/func");
 
+
+
 function addToCart(prodId){
     $.ajax({
         url:'/Add-cart/'+prodId,
@@ -40,10 +42,12 @@ function changeQuantity(cartId,prodId,count,name,price){
             }
             else{
                 let total=response.total
+                let offer=response.offer
                document.getElementById(prodId).innerHTML=quantity+count
                document.getElementById(name).innerHTML=price*(quantity+count)
-               document.getElementById('hey').innerHTML=total
-               document.getElementById('hai').innerHTML=total
+               document.getElementById('total').innerHTML=total-offer
+               document.getElementById('subtotal').innerHTML=total
+               document.getElementById('off').innerHTML=offer
 
             }  
         }
@@ -83,6 +87,7 @@ function removePro(cart,prodId){
 }
 
 $('#checkOut').submit((e)=>{
+    console.log("867777777777778");
     e.preventDefault()
     $.ajax({
         url:'/place-order',
@@ -93,12 +98,19 @@ $('#checkOut').submit((e)=>{
            
            if(response.codSuccess){
             console.log('ajiosdfhoia5165156151651');
-            location.href='/confirm/'+response.ID
+            location.href='/confirm'
            }
-           else{
+           else if(response.razorpay){
             
             razorpayPayment(response)
             
+           }
+           else{
+             for(let i = 0;i < response.links.length;i++){
+                      if(response.links[i].rel === 'approval_url'){
+                         location.href=response.links[i].href
+                      }
+                    }
            }
         } 
     }) 
@@ -150,7 +162,7 @@ function verifyPayment(payment,order){
         method:'post',
         success:(response)=>{
             if(response.status){
-              location.href='/confirm/'+order.receipt
+              location.href='/confirm'
             } 
             else{
                 alert('payment failed')
@@ -227,6 +239,58 @@ function cancelUser(id){
       })
 
 }
+
+$('#Saved').submit((e)=>{
+    e.preventDefault()
+    $.ajax({
+        url:'/radioAddress',
+        method:'post',
+        data:$('#Saved').serialize()
+    })
+})
+
+$('#Coupon').submit((e)=>{
+    e.preventDefault()
+    console.log('callllllllllllllllll');
+    $.ajax({
+    
+        url:'/couponForUser',
+        method:'post',
+        data:$('#Coupon').serialize(),
+        success:(response)=>{
+            if(response.equal){
+                let ERR=document.getElementById('ERR')
+                ERR.innerHTML='COUPON ALLREADY USED'
+                
+            }
+            else if(response.notequal){
+                let ERR=document.getElementById('ERR')
+                // let SUCC=document.getElementById('SUCC')
+                // SUCC.innerHTML=""
+                ERR.innerHTML='ONLY ONE COUPON IS APPLICABLE'
+                
+            }else{
+                if(response.status){
+                    let ERR=document.getElementById('ERR')
+                    ERR.innerHTML="COUPON ALLREADY USED"
+                    
+                }
+                else if(response.notFound){
+                    let ERR=document.getElementById('ERR')
+                    ERR.innerHTML="INVALID COUPON"
+                    
+                }
+                else{
+                   
+                    location.reload()
+                    
+                }
+            }
+            
+           
+        }
+    })
+})
 
 // $('#checkOut').submit((e)=>{
 //     e.preventDefault()

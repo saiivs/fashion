@@ -48,10 +48,10 @@
                                 <span>{{#if acc}}{{acc.username}}{{else}}Account{{/if}}<i class="arrow_carrot-down"></i></span>
                                 <ul>
                                     {{#if acc}}
-                                    <li><a href="/logout">logout</a></li>
-                                    <li><a href="/profile">Profile</a></li>
+                                    <li><a href="/logout">LOGOUT</a></li>
+                                    <li><a href="/profile">PROFILE</a></li>
                                     {{else}}
-                                    <li><a href="/login-user">login</a></li>
+                                    <li><a href="/login-user">LOGIN</a></li>
                                     {{/if}}
                                    
                                 </ul>
@@ -83,9 +83,9 @@
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li{{#if value}} class="active"{{/if}}><a href="/">Home</a></li>
-                            <li {{#if valuea}}class="active"{{/if}}><a href="/shop">Shop</a></li>
-                            <li  {{#if valuec}}class="active"{{/if}}><a  href="/cart">Cart<span class="badge badge-dark pt-2 ml-1" id="Add-Cart">{{count}}</span></a></li>
+                            <li{{#if value}} class="active"{{/if}}><a href="/">HOME</a></li>
+                            <li {{#if valuea}}class="active"{{/if}}><a href="/shop">SHOP</a></li>
+                            <li  {{#if valuec}}class="active"{{/if}}><a  href="/cart">CART<span class="badge badge-dark pt-2 ml-1" id="Add-Cart">{{count}}</span></a></li>
                                 {{!-- <ul class="dropdown">
                                     <li><a href="./about.html">About Us</a></li>
                                     <li><a href="./shop-details.html">Shop Details</a></li>
@@ -94,8 +94,8 @@
                                     <li><a href="./blog-details.html">Blog Details</a></li>
                                 </ul> --}}
                             
-                            <li><a href="#">Blog</a></li>
-                            <li {{#if valueb}}class="active"{{/if}}><a href="/contacts">Contacts</a></li>
+                            {{!-- <li><a href="#">Blog</a></li>
+                            <li {{#if valueb}}class="active"{{/if}}><a href="/contacts">Contacts</a></li> --}}
                         </ul>
                     </nav>
                 </div>

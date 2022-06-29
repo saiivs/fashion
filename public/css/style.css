@@ -2523,10 +2523,10 @@ ol {
 -----------------------*/
 
 .coupon__code {
-	color: #0d0d0d;
+	color: #fffcfc;
 	font-size: 14px;
 	border-top: 2px solid #77b527;
-	background: #f5f5f5;
+	background: #0e0d0d;
 	padding: 23px 30px 18px;
 	margin-bottom: 50px;
 }

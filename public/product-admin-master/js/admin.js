@@ -1,4 +1,5 @@
 function Block(id,name){
+  alert('ca,meeeeeeeeee')
     
     swal({
         title: "Are you sure to block?",
@@ -100,7 +101,62 @@ function cancel(id){
       } else {
         swal("cancelled");  
       }
-    });
-   
+    }); 
+}
+
+function offer(name){
+  console.log('h88888888888888888888888888888888');
+  console.log(name);
+  $.ajax({
+    url:'/admin/offerApply/'+name,
+    method:'get',
+    success:(response)=>{
+      alert(response)
+    } 
+  })
+}
+
+function deletePro(id,name){
+  swal({
+    title: "Are you sure to delete this Product?",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  }).then((willDelete)=>{
+    if(willDelete){
+      $.ajax({
+        url:'/del-pro/'+id,
+        method:'get',
+        success:(response)=>{
+          if(response){
+            swal("successfully Deleted  The Product", {
+              icon: "success",
+             
+            }).then(()=>{
+              
+              location.href='/admin/products' 
+            })     
+          }
+          
+        }
+      })
+    }else {
+      swal("cancelled");  
+    }
+  })
+}
+
+function Rmv(id){
+  console.log('ajaxxx22222222222xxxxxxxxxxxx');
+  console.log(id);
+    $.ajax({
+      url:'/admin/mvOffer/'+id,
+      method:'post',
+      success:(response)=>{
+        if(response){
+          location.reload()
+        }
+      }
+    })
 }
 

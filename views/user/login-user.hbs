@@ -13,19 +13,22 @@
           {{/if}}
           <!-- Email input -->
           <div class="form-outline mb-4">
-            <span class="text-danger" id="ERR_1"></span>
+            
+             <label class="form-label" for="">Email address</label>
             <input type="email" name="email" id="Email-ER" onkeyup="valid()" class="form-control form-control-lg"
              placeholder="Enter email"/>
-            <label class="form-label" for="">Email address</label>
+             <span class="text-danger" id="ERR_1"></span>
+           
           </div>
           
 
           <!-- Password input -->
           <div class="form-outline mb-3">
-            <span class="text-danger" id="ERR_2"></span>
+            
+            <label class="form-label" >Password</label>
             <input type="password" name="password" id="Pass-ER" onkeyup="validPass()" class="form-control form-control-lg"
               placeholder="Enter password" />
-            <label class="form-label" >Password</label>
+            <span class="text-danger" id="ERR_2"></span>
           </div>
 
           <div class="d-flex justify-content-between align-items-center">

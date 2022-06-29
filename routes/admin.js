@@ -98,7 +98,7 @@ router.get('/add-products',(req,res)=>{
 })
 
 router.post('/add-products',(req,res)=>{
-  console.log(req.body);
+  
   console.log(req.files.image);
   helper.addProducts(req.body).then((id)=>{
     let image=req.files.image;
@@ -114,9 +114,10 @@ router.post('/add-products',(req,res)=>{
 })
 
 router.get('/del-pro/:id',(req,res)=>{
+  console.log("haiiiiiiiiiii");
   let delpro=req.params.id;
   helper.delProducts(delpro).then((result)=>{
-    res.redirect('/admin/products')
+    res.json(result)
   })
 })
 
@@ -247,6 +248,97 @@ router.get('/cancel/:id',(req,res)=>{
     res.json({status:true})
   })
 })
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>BANNERS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+router.get('/Banner',(req,res)=>{
+ 
+  helper.getBanner().then(async(banner)=>{
+    let Coupons=await helper.getCoupon()
+      res.render('admin/banners2',{banner,Coupons})
+   
+  })
+})
+
+router.post('/banner_data',(req,res)=>{
+  helper.addBanner(req.body).then((id)=>{
+
+    console.log(req.files.image); 
+    let image=req.files.image;
+    image.mv('./public/banner_img/'+id+'.jpg',(err,data)=>{
+      if(!err){
+        
+        res.redirect('/admin/banners2')
+      }
+      else{
+        console.log(err);
+      }
+    })
+  })
+})
+
+
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>offers>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+router.get('/offers',(req,res)=>{
+  helper.getOffer().then((offer)=>{
+    res.render('admin/offers',{offer})
+  })
+})
+
+router.post('/offer',(req,res)=>{
+  helper.addOffer(req.body).then((offer)=>{
+    console.log('offer came post');
+    res.redirect('/admin/offers')
+  })
+})
+
+router.get('/applyOffer',(req,res)=>{
+  helper.getProducts().then((pro)=>{
+    helper.getOffer().then((offer)=>{
+      // console.log('checkingggggggggggggggg');
+      // console.log(offer);
+      res.render('admin/applyoffers',{pro,offer})
+    })
+  })
+})
+
+router.post('/updateOffer/:id',async(req,res)=>{
+  let offer=req.body.offer
+  let value=await helper.getOffervalue(offer)
+  helper.updateOffer(req.params.id,value).then((response)=>{
+    res.redirect('/admin/applyOffer')
+  })
+})
+
+router.post('/mvOffer/:id',(req,res)=>{
+  console.log('96325896487////');
+  let ID=req.params.id
+  helper.rmvOffer(ID).then((removed)=>{
+    console.log('ajax resssssssssssssssss');
+    res.json(removed)
+  })
+})
+
+router.get('/offerDel/:id',(req,res)=>{
+  let ID=req.params.id
+  helper.delOffer(ID).then((done)=>{
+    res.redirect('/admin/offers')
+  })
+})
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>coupon>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+router.post('/Coupon',(req,res)=>{
+  helper.AddCoupon(req.body).then((ADDED)=>{
+    res.redirect('/admin/Banner')
+  })
+})
+
+
+
+
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>logout>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

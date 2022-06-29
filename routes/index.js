@@ -4,10 +4,19 @@ const { redirect } = require('express/lib/response');
 const async = require('hbs/lib/async');
 const { Db } = require('mongodb');
 var config=require('../config/otp')
+const paypal = require('paypal-rest-sdk');
 
 var router = express.Router();
-var helper = require('../helper/func')
+var helper = require('../helper/func');
+// const { getOffer } = require('../helper/func');
 var client=require('twilio')(config.accountSID,config.authToken)
+
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'ARl89X7dn6cGfHYbINJntTQHmAwBzBt-9OWU2pBnqd07YLnAYXmbGvMFh8kJbbmhVVTjsvxs6FCTvzbV',
+  'client_secret': 'EKzIsIgre162FnRM6J-wd0Tm6SyS00AWUWElZvAkvpvIIoZHOuEZrKSki9D2ii9ou7y2VKqDOfkRQP_N'
+});
+
 function verify(req,res,next){
   if(req.session.logedin){
     res.redirect('/')
@@ -32,28 +41,31 @@ function ok(req,res,next){
 
 /* GET home page. */
 router.get('/',function(req, res, next) {
-  
-  if(req.session.logedin){
+  helper.getBanner().then((banner)=>{
+    if(req.session.logedin){
     
-  helper.getCount(req.session.user._id).then((count)=>{
-    console.log(count);
-    
-    let acc=req.session.user
-    console.log(count);
-    // req.session.count=count
-    res.render('user/index',{value:true,user:true,acc,count});
-    value=false;
+      helper.getCount(req.session.user._id).then((count)=>{
+        console.log(count);
+        
+        let acc=req.session.user
+        console.log(count);
+        // req.session.count=count
+        res.render('user/index',{value:true,user:true,acc,count,banner});
+        value=false;
+      })
+      
+      }
+      else{
+        helper.getProducts().then((pro)=>{
+         
+            res.render('user/index',{value:true,user:true,pro,banner});
+            value=false;
+          
+        })
+      }
   })
   
-  }
-  else{
-    helper.getProducts().then((pro)=>{
-     
-        res.render('user/index',{value:true,user:true,pro});
-        value=false;
-      
-    })
-  }
+  
   }
   );
 
@@ -61,6 +73,7 @@ router.get('/shop',ok,function(req,res){
  
   helper.getProducts().then((pro)=>{
    helper.getCatog().then((catog)=>{
+    // let offer=await helper.getOffer()
     let acc=req.session.user
     if(req.session.help){
       product=req.session.CatShow
@@ -211,14 +224,14 @@ router.post('/otp-verify',(req,res)=>{
 
 // >>>>>>>>>>>>product details>>>>>>>>>>
 
-router.get('/proDetails/:id',(req,res)=>{
-   console.log(req.params.id)
-   req.session.pro=req.params.id
-  res.redirect('/proo')
-})
+// router.get('/proDetails/:id',(req,res)=>{
+//    console.log(req.params.id)
+//    req.session.pro=req.params.id
+//   res.redirect('/proo')
+// })
 
-router.get('/proo',ok,(req,res)=>{
-  let got=req.session.pro
+router.get('/proDetails/:id',ok,(req,res)=>{
+  let got=req.params.id
   helper.getedit(got).then((data)=>{
     let count=req.session.count
     console.log(data);
@@ -248,14 +261,25 @@ router.get('/cart',ok,async(req,res)=>{
   if(req.session.logedin){
     
     let total=await helper.getTotal(req.session.user._id)
+    
+    let offer=await helper.getOfferSum(req.session.user._id)
+    
+   
+    
     helper.getCartProd(req.session.user._id).then((products)=>{
-      // helper.getCount(req.session.user._id).then((count)=>{
-       
-      // })
-      
+      let preDeduction=total
+      total=total-offer;
+      let coupon=0
+      console.log(req.session.percentage);
+      if(req.session.percentage){
+        console.log("coupnnnnnnnnnnnnnnnnn");
+        coupon=req.session.percentage
+        coupon=(total/100)*coupon
+        total=total-coupon
+      }
       let acc=req.session.user
       console.log("haii"); 
-      res.render('user/shopping-cart',{valuec:true,user:true,acc,products,count:req.session.count,total})
+      res.render('user/shopping-cart',{valuec:true,user:true,acc,products,count:req.session.count,total,offer,preDeduction,coupon})
      
     })
   }
@@ -274,12 +298,14 @@ router.post('/changeQuantity',(req,res)=>{
   
   helper.changeProQuantity(req.body).then(async(response)=>{
     let total=await helper.getTotal(req.session.user._id)
+    let offer=await helper.getOfferSum(req.session.user._id)
     if(response.removeProduct){
       response.total=total
+      response.offer=offer
       res.json(response)
     }else{
       
-      res.json({total:total})
+      res.json({total:total,offer:offer})
     }
   
    
@@ -307,11 +333,33 @@ router.get('/showCart/:name',(req,res)=>{
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>check out>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 router.get('/check-out',(req,res)=>{
+
   helper.getCartProd(req.session.user._id).then(async(products)=>{
     acc=req.session.user
+   
     let total=await helper.getTotal(req.session.user._id)
+    let Address=await helper.getSavedAddress(req.session.user._id)
+    let offer=await helper.getOfferSum(req.session.user._id)
+    let preDeduction=total
+     total=total-offer
+     let coupon=0
+     if(req.session.percentage){
+      console.log("coupnnnnnnnnnnnnnnnnn");
+      coupon=req.session.percentage
+      coupon=(total/100)*coupon
+      total=total-coupon
+    }
+    
+    console.log(Address);
     if(total!=0){
-      res.render('user/checkout',{products,user:true,acc,total})
+      if(req.session.Address){
+       let radio=req.session.Address
+       res.render('user/checkout',{products,user:true,acc,total,Address,radio,offer,coupon,preDeduction})
+      }
+      else{
+        res.render('user/checkout',{products,user:true,acc,total,Address,offer,coupon,preDeduction})
+      }
+      
     }
     else{
       res.render('user/shopping-cart',{valuec:true,user:true,acc})
@@ -321,47 +369,99 @@ router.get('/check-out',(req,res)=>{
 })
 
 router.post('/place-order',async(req,res)=>{
+  console.log("new oneeeeeeeeeeee");
+  console.log(req.body);
+  let body=req.body
+  console.log(req.body);
+ if(req.body['savedaddress']=='save'){
+  helper.saveAddress(req.body)
+ }
+ 
   let products=await helper.getCartProdList(req.session.user._id)
   let totalPrice=await helper.getTotal(req.session.user._id)
-  helper.placeOrder(req.body,products,totalPrice).then((orderID)=>{
+  let offer=await helper.getOfferSum(req.session.user._id)
+  totalPrice=totalPrice-offer
+  if(req.session.percentage){
+    let coupon=req.session.percentage 
+    coupon=(totalPrice/100)*coupon
+    totalPrice=totalPrice-coupon
+  }
+  if(req.body['radio']!='true'){
+    console.log(req.body.radio);
+     body=await helper.getSavedRAddress(req.body.radio)
+     body.paymentMethod=req.body.paymentMethod
+  }
+  console.log(body);
+  helper.placeOrder(body,products,totalPrice).then((orderID)=>{
+    req.session.orderID=orderID
     let confirm={
       ID:orderID,
-      codSuccess:true
+      codSuccess:true 
     }
     
     if(req.body['paymentMethod']=='COD'){
       res.json(confirm)
     }
-    else{ 
+    else if(req.body['paymentMethod']=='Razor'){ 
       console.log('ithanooooooooooooooo');
       
       helper.getRazorPay(orderID,totalPrice).then((response)=>{
        
-        response.codSuccess=false;
+        response.razorpay=true;
         response.ID=orderID; 
        
         res.json(response)
       })
     }
+    else {
+      console.log('paypal elseeeeeeeeeeeeeeeeeeeeeee');
+      helper.getPayPal(orderID,totalPrice).then((payment)=>{
+        payment.ID=orderID;
+        res.json(payment)
+      })
+    }
   })
 })
 
-router.get('/confirm/:id',async(req,res)=>{
+router.get('/confirm',async(req,res)=>{
   acc=req.session.user
-  let products=await helper.getorderProd(req.params.id)
-  let address=products.slice(0,1) 
-  res.render('user/confirm',{user:true,acc,products,address})
+  let ID=req.session.orderID
+  let products=await helper.getorderProd(ID)  
+  let offer=await helper.getOfferSum(req.session.user._id)
+  let address=products.slice(0,1)
+  if(req.session.percentage){
+    let coupon=req.session.percentage
+      coupon=(address[0].sum/100)*coupon
+    address[0].sum=address[0].sum-coupon 
+  }
+  
+  
+  console.log(address);
+  res.render('user/confirm',{user:true,acc,products,address,offer})
   helper.removeCart(req.session.user._id)
 })
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>profile>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+router.post('/radioAddress',(req,res)=>{
+  req.session.Address=req.body;
+
+  res.redirect('/check-out')
+
+})
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>profile>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 router.get('/profile',(req,res)=>{
-  helper.getprofile(req.session.user._id).then(async(profile)=>{
-    let order=await helper.getOrderHistory(req.session.user._id)
-    acc=req.session.user
-    res.render('user/profile',{user:true,profile,order,acc})
-  }) 
+  if(req.url=='/profile'){
+    helper.getprofile(req.session.user._id).then(async(profile)=>{
+      let order=await helper.getOrderHistory(req.session.user._id)
+      acc=req.session.user
+      res.render('user/profile',{user:true,profile,order,acc})
+    }) 
+  }else{
+    res.send("error page found")
+  }
+  
 })
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.wishList>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -397,14 +497,47 @@ router.get('/removelist/:id',(req,res)=>{
 router.post('/verify-payment',(req,res)=>{
   console.log(req.body);
   helper.verifyPayment(req.body).then((response)=>{
-    helper.changePaymentStatus(req.body['order[receipt]']).then((response)=>{
-      console.log("payment successfull");
+    helper.changePaymentStatus(req.body['order[receipt]']).then(async(response)=>{
+      if(req.session.usedCoupon){
+        let a=await helper.addUsedCoupon(req.session.usedCoupon,req.session.user._id)
+        req.session.usedCoupon=false;
+      }
+      console.log("payment successfull"); 
       res.json({status:"true"})
     })
   }).catch((err)=>{
     console.log();
     res.json({status:false,errMsg:''})
   })
+})
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>paypal>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+router.get('/success',(req,res)=>{
+  ID=req.session.orderID
+  helper.changePaymentStatus(ID).then((response)=>{
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
+   
+    const execute_payment_json = {
+      "payer_id": payerId,
+      "transactions": [{
+          "amount": {
+              "currency": "USD",
+              "total": "25.00"
+          }
+      }]
+    }
+    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+      if (error) {
+          console.log(error.response);
+          throw error;
+      } else {
+          console.log(JSON.stringify(payment));
+          res.redirect('/confirm');
+      }
+  });
+  }) 
 })
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.ordercancel userside>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -430,10 +563,50 @@ router.post('/changePassword',(req,res)=>{
   })
 })
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Coupon>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+router.post('/couponForUser',(req,res)=>{ 
+  console.log(req.body);
+  let Coupon=req.body.Coupon_Name
+  helper.checkCoupon(Coupon,req.session.user._id).then((check)=>{
+      if(check.status){
+        res.json({status:true})
+      }
+      else if(check.notFound){
+        console.log('notfounddddd');
+        res.json({notFound:true})
+      }
+      else{
+        req.session.usedCoupon=Coupon
+        helper.AddCouponCart(req.session.user._id,Coupon).then(async(match)=>{
+          console.log('sessionaaaaaaaaaaa');
+          if(match.equal)
+          {
+            res.json(match)  
+          }
+          else if(match.notequal){
+            res.json(match)
+          }
+          else{
+            console.log('ok hereeeeeeeeeeeeee');
+            req.session.percentage=check.value
+            match.apply=true
+            res.json(match)
+          }
+        })   
+    }
+  })
+})
+
+// router.get('*',(req,res)=>{
+//   res.send("")
+// })
+
 
 router.get('/logout',(req,res)=>{
   req.session.logedin=false;
   req.session.catShow=false;
+  req.session.percentage=false;
   res.redirect('/')
 })
  

@@ -9,6 +9,8 @@ const res = require('express/lib/response');
 var objectId=require('mongodb').ObjectId
 const RazorPay=require('razorpay');
 const { resolve } = require('path');
+const paypal=require('paypal-rest-sdk');
+const { exitCode } = require('process');
 var instance = new RazorPay({
     key_id: 'rzp_test_ZE8zDNmBvMPZXe',
     key_secret: 'qU6UsHaXFxDClWanmJxjRMrz',
@@ -81,12 +83,15 @@ module.exports={
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>products>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
-    addProducts:(con)=>{
+    addProducts:(con)=>{ 
         con.price=parseInt(con.price)
         con.quantity=parseInt(con.quantity)
         return new Promise((res,rej)=>{
             db.get().collection("prodata").insertOne(con).then((data)=>{
                 db.get().collection(collections.PRODATA).update({},{$set:{status:true}})
+                db.get().collection(collections.PRODATA).update({},{$set:{offername:null}})
+                db.get().collection(collections.PRODATA).update({},{$set:{offer:0}})
+                
                 console.log(data);
                 res(data.insertedId)
             })
@@ -102,7 +107,7 @@ module.exports={
 
     delProducts:(id)=>{
         return new Promise((res,rej)=>{
-            db.get().collection('prodata').remove({_id:objectId(id)}).then((result)=>{
+            db.get().collection('prodata').deleteOne({_id:objectId(id)}).then((result)=>{
                 res(result)
             })
         })
@@ -371,7 +376,7 @@ getTotal:(id)=>{
                 $unwind:'$products'
             },
             {
-                $project:{
+                $project:{  
                     items:'$products.item',
                     quantity:'$products.quantity'
                 }
@@ -395,12 +400,14 @@ getTotal:(id)=>{
                     sum:{$sum:{$multiply:['$quantity','$product.price']}}
                 }
             }
+          
         ]).toArray()
         if(!total[0]){
             res(0)
         }
         else{
-            
+
+            console.log(total);
             res(total[0].sum)
         }
        
@@ -419,6 +426,8 @@ getCatName:(name)=>{
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>address details>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 placeOrder:(order,products,total)=>{
+    console.log("hai order");
+    console.log(order);
     return new Promise((res,rej)=>{
        let status=order.paymentMethod==='COD'?'placed':'pending'
        var date=new Date()
@@ -452,6 +461,31 @@ placeOrder:(order,products,total)=>{
       })
     })
 
+},
+
+saveAddress:(address)=>{
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.ADDRESS).insertOne(address).then((success)=>{
+            res(success)
+        })
+    })
+},
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>saved address>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+getSavedAddress:(ID)=>{
+    console.log(ID);
+    return new Promise(async(res,rej)=>{
+    let address=await db.get().collection(collections.ADDRESS).find({user:ID}).toArray()
+    res(address)
+})
+},
+getSavedRAddress:(ID)=>{
+    console.log(ID);
+    return new Promise(async(res,rej)=>{
+    let address=await db.get().collection(collections.ADDRESS).findOne({_id:ObjectId(ID)})
+    res(address)
+})
 },
 
 getCartProdList:(id)=>{
@@ -718,6 +752,56 @@ AddWishList:(proID,user)=>{
             })
         })
     },
+    getPayPal:(orderID,totalPrice)=>{
+        console.log(totalPrice);
+        console.log('getpaypal gottttttttttttt');
+        return new Promise((res,rej)=>{
+            const create_payment_json = {
+                "intent": "sale",
+                "payer": {
+                    "payment_method": "paypal"
+                },
+                "redirect_urls": {
+                    "return_url": "http://localhost:3000/success",
+                    "cancel_url": "http://localhost:3000/cancel"
+                },
+                "transactions": [{
+                    "item_list": {
+                        "items": [{
+                            "name": "Red Sox Hat",
+                            "sku": "001",
+                            "price": totalPrice,
+                            "currency": "USD",
+                            "quantity": 1
+                        }]
+                    },
+                    "amount": {
+                        "currency": "USD",
+                        "total": totalPrice
+                    },
+                    "description": "Hat for the best team ever"
+                }]
+            }
+            paypal.payment.create(create_payment_json, function (error, payment) {
+                console.log('create gotttttttttttttttttttttttt');
+                if (error) { 
+                    console.log('got the errrorrrrr');
+                    throw error; 
+                } else {
+                    // for(let i = 0;i < payment.links.length;i++){
+                    //   if(payment.links[i].rel === 'approval_url'){
+                    //     res.redirect(payment.links[i].href);
+                    //   }
+                    // }
+                    res(payment)
+                }
+              })
+            
+        })   
+    },
+   
+
+    
 
     verifyPayment:(details)=>{
         return new Promise((res,rej)=>{
@@ -783,7 +867,241 @@ AddWishList:(proID,user)=>{
             })
         }
     })
+   },
+
+   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>banners>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+   addBanner:(body)=>{
+    return new Promise(async(res,rej)=>{
+        let banner=await db.get().collection(collections.BANNERS).findOne()
+        if(!banner){
+            let created=await db.get().createCollection(collections.BANNERS,{"capped":true,"size":2000,"max":1})
+        }
+       
+        db.get().collection(collections.BANNERS).insertOne(body).then((banner)=>{
+            res(banner.insertedId)
+        })
+    })
+   },
+
+   getBanner:()=>{
+    console.log("bannner functionnnnnnn");
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.BANNERS).findOne().then((response)=>{
+            res(response)
+        })
+    })
+   },
+
+   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>offers>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+
+   addOffer:(offer)=>{
+    console.log("offer functionnnnnnnnnnnnnnnnnnnnnnnnn");
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.OFFERS).insertOne(offer).then((response)=>{
+            res(response)
+        })
+    })
+   },
+
+   getOffer:()=>{
+    console.log("getoferrrrrrrrrrrr");
+    return new Promise(async(res,rej)=>{
+       let offer=await db.get().collection(collections.OFFERS).find().toArray()
+       res(offer)
+    })
+   },
+ 
+   updateOffer:(id,value)=>{
+    value=parseInt(value)
+    return new Promise(async(res,rej)=>{
+       let product=await db.get().collection(collections.PRODATA).findOne({_id:objectId(id)})
+       let userOfferDisplay=value
+        value=parseInt((product.price/100)*value)
+        db.get().collection(collections.PRODATA).updateOne({_id:objectId(id)},{$set:{offer:value,offername:userOfferDisplay}}).then((response)=>{
+            res()
+        })
+    })
+   },
+
+   getOffervalue:(offer)=>{
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.OFFERS).findOne({offername:offer}).then((offer)=>{
+            res(offer.percentage)
+        })
+    }) 
+   },
+
+   getOfferSum:(id)=>{
+    return new Promise(async(res,rej)=>{
+       let offer=await db.get().collection(collections.USERCART).aggregate([
+            {
+                $match:{user:objectId(id)}
+            },
+            {
+                $unwind:'$products'
+            },
+            {
+                $project:{
+                    items:'$products.item',
+                    quantity:'$products.quantity'
+                }
+            },
+            {
+                $lookup:{
+                    from:'prodata',
+                    localField:'items',
+                    foreignField:'_id',
+                    as:'product'
+                }
+            },
+            {
+                $project:{
+                    items:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+                }
+            },
+            {
+                $group:{
+                    _id:null,
+                    offer:{$sum:{$multiply:['$quantity','$product.offer']}}
+                }
+            }
+        ]).toArray()
+        if(!offer[0]){
+            res(0)
+        }
+        else{
+            res(offer[0].offer)
+        }
+       
+    })
+   },
+
+   rmvOffer:(id)=>{
+    console.log("hghgjhgjh");
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.PRODATA).updateOne({_id:objectId(id)},{$set:{offer:0,offername:null}}).then((result)=>{
+            console.log("64989415498");
+            console.log(result);
+            res(result)
+        })
+    })
+   },
+
+   delOffer:(ID)=>{
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.OFFERS).deleteOne({_id:objectId(ID)}).then((done)=>{
+            res(done)
+        })
+    })
+   },
+
+   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>coupon>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+   AddCoupon:(BODY)=>{
+    let coupon_num=BODY.Coupon_Value
+    BODY.Coupon_Value=parseInt(coupon_num)
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.COUPON).insertOne(BODY).then((ADDED)=>{
+            res(ADDED)
+        })
+    })
+   },
+
+   getCoupon:()=>{
+    return new Promise(async(res,rej)=>{
+      let Coupons=await db.get().collection(collections.COUPON).find().toArray()
+      res(Coupons)
+    })
+   },
+
+   checkCoupon:(code,ID)=>{
+    return new Promise(async(res,rej)=>{
+        let CouponCheck={}
+        console.log(code);
+        // let CouponCart= await db.get().collection(collections.USERCART).findOne({user:objectId(ID)})
+        // console.log(CouponCart.Coupon);
+       
+
+        
+        let Coupons=await db.get().collection(collections.COUPON).findOne({Coupon_Name:code})
+        console.log(Coupons);
+        if(Coupons){
+           let Coupon_Exist=await db.get().collection(collections.UDATA).findOne({_id:objectId(ID),Coupon:code})
+           console.log(Coupon_Exist);
+           if(Coupon_Exist){
+            console.log('existedddddddddddddddd');
+                CouponCheck.status=true;
+                res(CouponCheck)
+           }
+           else{
+            CouponCheck.newCoupon=false;
+            console.log(Coupons.Coupon_Value);
+            CouponCheck.value=Coupons.Coupon_Value
+            console.log('applieddddddddddddd');
+            res(CouponCheck)
+           }
+        }
+        else{
+            console.log('not approvedddddddd');
+            CouponCheck.notFound=true;
+            res(CouponCheck)
+        
+    }
+   
+    })
+   },
+
+   addUsedCoupon:(UsedCoupon,ID)=>{
+        return new Promise(async(res,rej)=>{
+            let Coupon=[UsedCoupon]
+            let USER=await db.get().collection(collections.UDATA).findOne({_id:objectId(ID)})
+            if(USER.Coupon){
+               db.get().collection(collections.UDATA).updateOne({_id:objectId(ID)},{$push:{Coupon:add}}).then(()=>{
+                res()
+               })
+
+            }
+            else{
+                db.get().collection(collections.UDATA).updateOne({_id:objectId(ID)},{$set:{Coupon:Coupon}}).then(()=>{
+                    res()
+                })
+            }
+           
+        })
+   },
+
+   AddCouponCart:(ID,code)=>{
+    return new Promise(async(res,rej)=>{
+        let match={}
+        let cart=await db.get().collection(collections.USERCART).findOne({user:objectId(ID)})
+        if(cart.coupon){
+            if(cart.coupon==code){
+                match.equal=true;
+                res(match)
+            }
+            else{
+                match.notequal=true;
+                res(match)
+            }
+        }
+        else{
+            db.get().collection(collections.USERCART).updateOne({user:objectId(ID)},{$set:{coupon:code}}).then((match)=>{
+                res(match)
+            })
+        }
+       
+    })
    }
+
+   
+
+
+ 
+
+   
+
+
 
   
 

@@ -4,5 +4,9 @@ module.exports={
     USERCART:'userCart',
     CATOGARY:'catgories',
     ORDER:'orderCollection',
-    WISHLIST:'WishList'
+    WISHLIST:'WishList',
+    BANNERS:'banners',
+    OFFERS:'offers',
+    ADDRESS:'address',
+    COUPON:'coupons'
 }

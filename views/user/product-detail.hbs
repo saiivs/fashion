@@ -217,7 +217,7 @@
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>{{data.price}} <span></span></h3>
+                            <h3>{{data.price}} <span class="text-success" style="font-size: small;text-decoration: unset;" >{{#if data.offername}}{{data.offername}}%{{/if}}</span></h3>
                             {{!-- <p>Coat with quilted lining and an adjustable hood. Featuring long sleeves with adjustable
                                 cuff tabs, adjustable asymmetric hem with elastic side tabs and a front zip fastening
                             with placket.</p> --}}
@@ -265,7 +265,7 @@
                                 <a style="cursor: pointer;" onclick="addToCart('{{data._id}}')"  class="primary-btn text-white">add to cart</a>
                             </div>
                             <div class="product__details__btns__option">
-                                <a  href="#"><i class="fa fa-heart"></i> add to wishlist</a>
+                                <a  href="" onclick="wish('{{data._id}}')"><i class="fa fa-heart"></i> add to wishlist</a>
                                 {{!-- <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a> --}}
                             </div>
                             <div class="product__details__last__option">

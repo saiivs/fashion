@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="/product-admin-master/css/fontawesome.min.css">
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="/product-admin-master/css/bootstrap.min.css">
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="/product-admin-master/css/templatemo-style.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Adding DataTables CSS and JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <!-- Adding jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Adding DataTables CSS and JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <!-- Adding jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Adding DataTables CSS and JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+</head>
+
+<body id="reportsPage">
+    <div class="" id="home">
+        <nav class="navbar navbar-expand-xl">
+            <div class="container h-100">
+                <a class="navbar-brand" href="#">
+                    <h1 class="tm-site-title mb-0">Admin</h1>
+                </a>
+                <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="fas fa-bars tm-nav-icon"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto h-100">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/AdminPanel">
+                                <i class="fas fa-tachometer-alt"></i>
+                                DASHBOARD
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        {{!-- <li class="nav-item dropdown">
+
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-file-alt"></i>
+                                <span>
+                                    Reports <i class="fas fa-angle-down"></i>
+                                </span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Daily Report</a>
+                                <a class="dropdown-item" href="#">Weekly Report</a>
+                                <a class="dropdown-item" href="#">Yearly Report</a>
+                            </div>
+                        </li> --}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/products">
+                                <i class="fas fa-shopping-cart"></i>
+                                PRODUCTS
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/orderList">
+                                <i class="fas fa-shopping-cart"></i>
+                                ORDERS
+                            </a>
+                        </li>
+                        {{!--
+                        <li class="nav-item">
+                            <a class="nav-link" href="accounts.html">
+                                <i class="far fa-user"></i>
+                                Accounts
+                            </a>
+                        </li> --}}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/user-list">
+                                <i class="far fa-user"></i>
+                                USERS
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/Banner">
+                                <i class="far fa-window-restore"></i>
+                                BANNERS & COUPONS
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-gift" aria-hidden="true"></i>
+                                <span>
+                                    OFFERS
+                                </span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/admin/offers">Add Offers</a>
+                                <a class="dropdown-item" href="/admin/applyOffer">Apply Offers</a>
+                            </div>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link d-block" href="/admin/logout">
+                                <b>Logout</b>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    </div>
+
+    <section class="container pt-4">
+
+        <table id="myTable" class="table text-dark ">
+            <thead>
+                <tr>
+                    <th scope="col">SL.NO</th>
+                    <th scope="col">PRODUCT</th>
+                    <th scope="col">PRICE</th>
+                    <th scope="col">IMAGE</th>
+                    <th scope="col">OFFERS</th>
+
+                    {{!-- <th scope="col">Edit</th>
+                    <th scope="col">Delete</th> --}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each pro}}
+                <tr>
+                    {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+                    <td>{{inc @index}}</td>
+                    <td class="tm-product-name">{{this.name}}</td>
+                    <td class="tm-product-name">{{this.price}}</td>
+
+
+
+                    <td><img class="rounded" style="width: 50px;height: 50px" src="/pro-img/{{this._id}}.jpg" alt="">
+                    </td>
+                    {{#if this.offername}}
+                    <td class="tm-product-name"><button style="font-size:small ;" onclick="Rmv('{{this._id}}')" type="button" class="btn btn-danger rounded px-3 py-2"
+                            >
+                            REMOVE 
+                        </button>&nbsp;<span class="text-danger">{{#if this.offername}}{{this.offername}}%&nbsp;Applied{{/if}}</span></td>
+                    {{else}}
+                    <td class="tm-product-name"><button type="button" class="btn btn-primary rounded px-3 py-2"
+                            data-toggle="modal" data-target="#b{{this._id}}">
+                            OFFERS 
+                        </button>&nbsp;<span class="text-danger">{{#if this.offername}}{{this.offername}}%&nbsp;Applied{{/if}}</span></td>
+                    {{/if}}
+                    
+                    {{!-- <td><a class="btn btn-warning btn-sm px-2 py-2 rounded"
+                            href="/admin/edit-pro/{{this._id}}">Edit</a>
+                    </td> --}}
+
+                    {{!-- <td>
+                        <a onclick="return confirm('are you sure to delete'+ {{this.name}})"
+                            href="/admin/del-pro/{{this._id}}" class="tm-product-delete-link">
+                            <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                        </a>
+                    </td> --}}
+                </tr>
+                {{/each}}
+
+            </tbody>
+        </table>
+        {{#each pro}}
+        <div class="modal fade" id="b{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="/admin/updateOffer/{{this._id}}" method="post">
+                    <div class="modal-body">
+                        
+                        <label
+                      for="category"
+                      >OFFERS</label
+                    >
+                    <select
+                      class="custom-select tm-select-accounts"
+                      id="category" name="offer"
+                    >
+                      <option selected>Select Offers</option>
+                      {{#each ../offer}}
+                      <option value="{{this.offername}}">{{this.offername}}</option>
+                      {{!-- <option value="2">Most Popular</option>
+                      <option value="3">Trending</option> --}}
+                      {{/each}}
+                    </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">ADD</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+    </section>
+
+
+
+    <script src="/product-admin-master/js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="/product-admin-master/js/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="/product-admin-master/js/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="/product-admin-master/js/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="/product-admin-master/js/tooplate-scripts.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="/product-admin-master/js/admin.js"></script>
+
+
+
+</body>
+<script>
+    Chart.defaults.global.defaultFontColor = 'white';
+    let ctxLine,
+        ctxBar,
+        ctxPie,
+        optionsLine,
+        optionsBar,
+        optionsPie,
+        configLine,
+        configBar,
+        configPie,
+        lineChart;
+    barChart, pieChart;
+    // DOM is ready
+    $(function () {
+        drawLineChart(); // Line Chart
+        drawBarChart(); // Bar Chart
+        drawPieChart(); // Pie Chart
+
+        $(window).resize(function () {
+            updateLineChart();
+            updateBarChart();
+        });
+    })
+</script>
+{{!--
+<script>
+    $(document).ready(function () {
+        $('#usersTable').DataTable();
+    });
+
+    function addRowCount(tableAttr) {
+        $(tableAttr).each(function () {
+            $('th:first-child, thead td:first-child', this).each(function () {
+                var tag = $(this).prop('tagName');
+                $(this).before('<' + tag + '>Sl No</' + tag + '>');
+            });
+            $('td:first-child', this).each(function (i) {
+                $(this).before('<td>' + (i + 1) + '</td>');
+            });
+        });
+    }
+
+    addRowCount('.table');
+
+</script> --}}
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+</body>
+
+</html>
