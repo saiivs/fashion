@@ -66,7 +66,9 @@ function drawLineChart() {
   }
 }
 
-function drawBarChart() {
+function drawBarChart(Cod,razor,paypal) {
+  console.log('charttttttttttt');
+  console.log(Cod);
   if ($("#barChart").length) {
     ctxBar = document.getElementById("barChart").getContext("2d");
 
@@ -105,11 +107,11 @@ function drawBarChart() {
     configBar = {
       type: "horizontalBar",
       data: {
-        labels: ["Red", "Aqua", "Green", "Yellow", "Purple", "Orange", "Blue"],
+        labels: ["COD", "RAZOR", "PAYPAL"],
         datasets: [
           {
             label: "# of Hits",
-            data: [33, 40, 28, 49, 58, 38, 44],
+            data: [Cod, razor, paypal],
             backgroundColor: [
               "#F7604D",
               "#4ED6B8",
@@ -130,7 +132,7 @@ function drawBarChart() {
   }
 }
 
-function drawPieChart() {
+function drawPieChart(Cod,razor,paypal) {
   if ($("#pieChart").length) {
     var chartHeight = 300;
 
@@ -159,15 +161,15 @@ function drawPieChart() {
       data: {
         datasets: [
           {
-            data: [18.24, 6.5, 9.15],
+            data: [Cod,razor,paypal],
             backgroundColor: ["#F7604D", "#4ED6B8", "#A8D582"],
             label: "Storage"
           }
         ],
         labels: [
-          "Used Storage (18.240GB)",
-          "System Storage (6.500GB)",
-          "Available Storage (9.150GB)"
+          "COD-"+Cod,
+          "RAZOR-"+razor,
+          "PAYPAL-"+paypal
         ]
       },
       options: optionsPie

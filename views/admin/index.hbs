@@ -17,7 +17,7 @@
 	Product Admin CSS Template
 	https://templatemo.com/tm-524-product-admin
 	-->
-</head> 
+</head>
 
 <body id="reportsPage">
     <div class="" id="home">
@@ -26,8 +26,9 @@
                 <a class="navbar-brand" href="index.html">
                     <h1 class="tm-site-title mb-0">Admin</h1>
                 </a>
-                <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler ml-auto mr-0" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <i class="fas fa-bars tm-nav-icon"></i>
                 </button>
 
@@ -42,8 +43,8 @@
                         </li>
                         {{!-- <li class="nav-item dropdown">
 
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-file-alt"></i>
                                 <span>
                                     Reports <i class="fas fa-angle-down"></i>
@@ -69,24 +70,24 @@
                             </a>
                         </li>
 
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="/admin/user-list">
                                 <i class="far fa-user"></i>
                                 USERS
                             </a>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="/admin/Banner">
                                 <i class="far fa-window-restore"></i>
                                 BANNERS & COUPONS
                             </a>
                         </li>
-                          <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-gift" aria-hidden="true"></i>
                                 <span>
-                                    OFFERS 
+                                    OFFERS
                                 </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -96,8 +97,8 @@
                         </li>
 
                         {{!-- <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cog"></i>
                                 <span>
                                     Settings <i class="fas fa-angle-down"></i>
@@ -113,7 +114,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link d-block " href="/admin/logout">
-                                 <b>Logout</b>
+                                <b>Logout</b>
                             </a>
                         </li>
                     </ul>
@@ -124,15 +125,21 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <p class="text-white mt-5 mb-5">Welcome back, <b>Admin</b></p>
+                    <p class="text-white mt-4 mb-4">Welcome back, <b>Admin</b></p>
                 </div>
             </div>
             <!-- row -->
             <div class="row tm-content-row">
-                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
-                    <div class="tm-bg-primary-dark tm-block">
-                        <h2 class="tm-block-title">Latest Hits</h2>
-                        <canvas id="lineChart"></canvas>
+                <div class="col-12 py-1 mb-2 text-start">
+                  <a href="/admin/Report" class="btn-primary rounded py-2">DOWNLOAD REPORT</a>
+                </div>
+                
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 text-center tm-block-col">
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller">
+                        <h2 class="tm-block-title">Storage Information</h2>
+                        <div id="pieChartContainer">
+                            <canvas id="pieChart" class="chartjs-render-monitor" width="200" height="200"></canvas>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
@@ -141,20 +148,22 @@
                         <canvas id="barChart"></canvas>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+
+                {{!-- <div class="col-sm-12 col-md-12 col-lg-6 col-xl-12 text-center tm-block-col">
                     <div class="tm-bg-primary-dark tm-block tm-block-taller">
                         <h2 class="tm-block-title">Storage Information</h2>
                         <div id="pieChartContainer">
                             <canvas id="pieChart" class="chartjs-render-monitor" width="200" height="200"></canvas>
-                        </div>                        
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                </div> --}}
+                {{!-- <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow">
                         <h2 class="tm-block-title">Notification List</h2>
                         <div class="tm-notification-items">
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-01.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-01.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Jessica</b> and <b>6 others</b> sent you new <a href="#"
                                             class="tm-notification-link">product updates</a>. Check new orders.</p>
@@ -162,7 +171,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-02.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-02.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Oliver Too</b> and <b>6 others</b> sent you existing <a href="#"
                                             class="tm-notification-link">product updates</a>. Read more reports.</p>
@@ -170,7 +180,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-03.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-03.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Victoria</b> and <b>6 others</b> sent you <a href="#"
                                             class="tm-notification-link">order updates</a>. Read order information.</p>
@@ -178,7 +189,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-01.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-01.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Laura Cute</b> and <b>6 others</b> sent you <a href="#"
                                             class="tm-notification-link">product records</a>.</p>
@@ -186,7 +198,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-02.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-02.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Samantha</b> and <b>6 others</b> sent you <a href="#"
                                             class="tm-notification-link">order stuffs</a>.</p>
@@ -194,7 +207,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-03.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-03.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Sophie</b> and <b>6 others</b> sent you <a href="#"
                                             class="tm-notification-link">product updates</a>.</p>
@@ -202,7 +216,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-01.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-01.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Lily A</b> and <b>6 others</b> sent you <a href="#"
                                             class="tm-notification-link">product updates</a>.</p>
@@ -210,7 +225,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-02.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-02.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Amara</b> and <b>6 others</b> sent you <a href="#"
                                             class="tm-notification-link">product updates</a>.</p>
@@ -218,7 +234,8 @@
                                 </div>
                             </div>
                             <div class="media tm-notification-item">
-                                <div class="tm-gray-circle"><img src="/product-admin-master/img/notification-03.jpg" alt="Avatar Image" class="rounded-circle"></div>
+                                <div class="tm-gray-circle"><img src="img/notification-03.jpg" alt="Avatar Image"
+                                        class="rounded-circle"></div>
                                 <div class="media-body">
                                     <p class="mb-2"><b>Cinthela</b> and <b>6 others</b> sent you <a href="#"
                                             class="tm-notification-link">product updates</a>.</p>
@@ -227,7 +244,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 {{!-- <div class="col-12 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
                         <h2 class="tm-block-title">Orders List</h2>
@@ -379,21 +396,65 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> --}}
             </div>
-        </div> --}}
+        </div>
         {{!-- <footer class="tm-footer row ">
             <div class="col-12 font-weight-light">
                 <p class="text-center text-white mb-0 px-4 small">
-                    Copyright &copy; <b>2018</b> All rights reserved. 
-                    
-                    Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
+                    Copyright &copy; <b>2018</b> All rights reserved.
+
+                    Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template
+                        Mo</a>
                 </p>
             </div>
         </footer> --}}
     </div>
+    {{!-- <div class="col-lg-6 mt-5 py-5">
+        <canvas id="myChart"></canvas>
+    </div> --}}
 
-     <script src="/product-admin-master/js/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script src="/product-admin-master/js/jquery-3.3.1.min.js"></script>
     <!-- https://jquery.com/download/ -->
     <script src="/product-admin-master/js/moment.min.js"></script>
     <!-- https://momentjs.com/ -->
@@ -418,13 +479,13 @@
         // DOM is ready
         $(function () {
             drawLineChart(); // Line Chart
-            drawBarChart(); // Bar Chart
-            drawPieChart(); // Pie Chart
+            drawBarChart({{ Cod }}, {{ razor }}, {{ paypal }}); // Bar Chart
+        drawPieChart({{ Cod }}, {{ razor }}, {{ paypal }}); // Pie Chart
 
-            $(window).resize(function () {
-                updateLineChart();
-                updateBarChart();                
-            });
+        $(window).resize(function () {
+            updateLineChart();
+            updateBarChart();
+        });
         })
     </script>
 </body>

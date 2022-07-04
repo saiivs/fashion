@@ -434,6 +434,7 @@ placeOrder:(order,products,total)=>{
        var month=date.getUTCMonth() + 1
        var day=date.getUTCDate()
        var year=date.getUTCFullYear()
+       var Time=new Date()
        let orderObj={
         deliveryDetails:{
             name:order.name,
@@ -451,7 +452,8 @@ placeOrder:(order,products,total)=>{
         products:products,
         totalPrice:total,
         paymentMethod:order.paymentMethod,
-        date:year + "/" + month + "/" + day,
+        date:year + "-" + month + "-" + day,
+        Time:Time,
         status:status
        }
        db.get().collection('orderCollection').insertOne(orderObj).then((response)=>{
@@ -549,7 +551,7 @@ getorderProd:(id)=>{
                     sum:1,items:1,quantity:1,product:1,Date:1,deliver:1,total:{$multiply:['$quantity','$product.price']}
                 }
             }
-        ]).sort({Date:-1}).toArray()
+        ]).sort({Time:-1}).toArray()
         
         res(order)
     })
@@ -624,7 +626,8 @@ getOrderAdmin:()=>{
                 items:'$products.item',
                 mobile:'$deliveryDetails.mobile', 
                 totalPrice:'$totalPrice',
-                Email:'$email' 
+                Email:'$email',
+                DELIVERED:'$Delivered' 
             }
         },
         {
@@ -645,7 +648,7 @@ getOrderAdmin:()=>{
         },
         {
             $project:{
-                paymentMethod:1,status:1,Date:1,items:1,products:1,totalPrice:1,quantity:1,name:1,mobile:1,Email:1,Names:1
+                paymentMethod:1,DELIVERED:1,status:1,Date:1,items:1,products:1,totalPrice:1,quantity:1,name:1,mobile:1,Email:1,Names:1,user:1
             }
         }
        ]).toArray()
@@ -656,7 +659,26 @@ getOrderAdmin:()=>{
 },
 statusUpdate:(id)=>{
 return new Promise((res,rej)=>{
-    db.get().collection(collections.ORDER).updateOne({_id:objectId(id)},{$set:{status:'cancelled'}}).then((response)=>{
+    db.get().collection(collections.ORDER).updateOne({_id:objectId(id)},{$set:{status:'CANCEL'}}).then((response)=>{
+        res(response)
+    })
+})
+}, 
+
+adminUpdateStatus:(status,ID)=>{
+    return new Promise((res,rej)=>{
+        db.get().collection(collections.ORDER).updateOne({_id:objectId(ID)},{$set:{status:status}}).then(()=>{
+            res()
+        })
+    })   
+},
+
+Deliver:(ID,userID)=>{
+    console.log(ID);
+    console.log(userID);
+return new Promise((res,rej)=>{
+    console.log("its okkkkkkkkkkkkkkk");
+    db.get().collection(collections.ORDER).updateOne({_id:objectId(ID),user:objectId(userID)},{$set:{Delivered:true}}).then((response)=>{
         res(response)
     })
 })
@@ -665,6 +687,7 @@ return new Promise((res,rej)=>{
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.wishList>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 AddWishList:(proID,user)=>{
     return new Promise(async(res,rej)=>{
+            let check={}
             let wishlist={
                item:objectId(proID)
             }
@@ -672,11 +695,14 @@ AddWishList:(proID,user)=>{
             if(exist){
                 let proExist=exist.products.findIndex(product=> product.item==proID)
                 if(proExist!=-1){
-                   res()
+                    
+                    check.exist=true;
+                   res(check)
                 }
                 else{
                     db.get().collection(collections.WISHLIST).updateOne({user:objectId(user)},{$push:{products:wishlist}}).then((data)=>{
-                        res()
+                        check.exist=false;
+                        res(check)
                     })
                 }
             }
@@ -686,7 +712,8 @@ AddWishList:(proID,user)=>{
                     products:[wishlist]
                 }
                 db.get().collection(collections.WISHLIST).insertOne(wish).then((data)=>{
-                    res()
+                check.exist=false;
+                    res(check)
                 })
             }
         })
@@ -724,12 +751,32 @@ AddWishList:(proID,user)=>{
     },
 
     removeList:(proID,userID)=>{
+        console.log("deleteeeeeeeeeeeeeee");
         return new Promise((res,rej)=>{
             db.get().collection(collections.WISHLIST).updateOne({user:objectId(userID)},{$pull:{products:{item:objectId(proID)}}}).then(()=>{
                 res()
-            })
+            }) 
         })
     },
+
+    getlistId:(ID)=>{
+        return new Promise(async(res,rej)=>{
+          let list=await db.get().collection(collections.WISHLIST).findOne({user:objectId(ID)})
+          if(list){ 
+           
+            res(list) 
+          }
+                 })
+    },
+
+    // checkWishList:(id,user)=>{
+    //     return new Promise((res,rej)=>{
+    //         let check=await db.get().collection(collections.WISHLIST).findOne({user:objectId(user),'$products.item':objectId(id)})
+    //         if(check){
+
+    //         }
+    //     })
+    // },
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>razorPay>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -1019,31 +1066,36 @@ AddWishList:(proID,user)=>{
     return new Promise(async(res,rej)=>{
         let CouponCheck={}
         console.log(code);
-        // let CouponCart= await db.get().collection(collections.USERCART).findOne({user:objectId(ID)})
-        // console.log(CouponCart.Coupon);
-       
-
-        
         let Coupons=await db.get().collection(collections.COUPON).findOne({Coupon_Name:code})
         console.log(Coupons);
         if(Coupons){
+           
            let Coupon_Exist=await db.get().collection(collections.UDATA).findOne({_id:objectId(ID),Coupon:code})
            console.log(Coupon_Exist);
            if(Coupon_Exist){
-            console.log('existedddddddddddddddd');
+            console.log('existed');
                 CouponCheck.status=true;
                 res(CouponCheck)
            }
            else{
-            CouponCheck.newCoupon=false;
-            console.log(Coupons.Coupon_Value);
-            CouponCheck.value=Coupons.Coupon_Value
-            console.log('applieddddddddddddd');
-            res(CouponCheck)
+            let date=new Date(Coupons.Coupons_Date)
+            let newDate=new Date()
+            if(date<=newDate){
+                CouponCheck.newCoupon=false;
+                console.log(Coupons.Coupon_Value);
+                CouponCheck.value=Coupons.Coupon_Value
+                console.log('applied');
+                res(CouponCheck)
+            }
+            else{
+                CouponCheck.Expired=true;
+                res(CouponCheck) 
+            }
+            
            }
         }
         else{
-            console.log('not approvedddddddd');
+            console.log('not approved');
             CouponCheck.notFound=true;
             res(CouponCheck)
         
@@ -1057,7 +1109,7 @@ AddWishList:(proID,user)=>{
             let Coupon=[UsedCoupon]
             let USER=await db.get().collection(collections.UDATA).findOne({_id:objectId(ID)})
             if(USER.Coupon){
-               db.get().collection(collections.UDATA).updateOne({_id:objectId(ID)},{$push:{Coupon:add}}).then(()=>{
+               db.get().collection(collections.UDATA).updateOne({_id:objectId(ID)},{$push:{Coupon:UsedCoupon}}).then(()=>{
                 res()
                })
 
@@ -1075,24 +1127,104 @@ AddWishList:(proID,user)=>{
     return new Promise(async(res,rej)=>{
         let match={}
         let cart=await db.get().collection(collections.USERCART).findOne({user:objectId(ID)})
-        if(cart.coupon){
-            if(cart.coupon==code){
-                match.equal=true;
-                res(match)
+        
+            if(cart.coupon){
+                if(cart.coupon==code){
+                    match.equal=true;
+                    res(match)
+                }
+                else{
+                    match.notequal=true;
+                    res(match)
+                }
             }
             else{
-                match.notequal=true;
-                res(match)
+                db.get().collection(collections.USERCART).updateOne({user:objectId(ID)},{$set:{coupon:code}}).then((match)=>{
+                    res(match)
+                })
             }
-        }
-        else{
-            db.get().collection(collections.USERCART).updateOne({user:objectId(ID)},{$set:{coupon:code}}).then((match)=>{
-                res(match)
-            })
-        }
+       
+        
        
     })
-   }
+   },
+
+   getCouponValue:(ID)=>{
+    return new Promise(async(res,rej)=>{
+       let cart= await db.get().collection(collections.USERCART).findOne({user:objectId(ID)})
+       if(cart){
+        if(cart.coupon){
+            console.log(cart.coupon);
+            let name=cart.coupon
+            let CouponValue=await db.get().collection(collections.COUPON).findOne({Coupon_Name:name})
+            console.log(CouponValue);
+            let value=CouponValue.Coupon_Value
+            console.log('new metoddddddd');
+            console.log(value);
+            res(value)
+           }
+           else{
+            res(false)
+           }  
+       }
+       else{
+        res(false)
+       }
+      
+    })
+   },
+
+   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>report>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+   getTotalReport:()=>{
+    return new Promise(async(res,rej)=>{
+        let report= await db.get().collection(collections.ORDER).aggregate([
+            {
+               $group:{
+                _id:"$paymentMethod",total:{$sum:"$totalPrice"}
+               }
+            }
+            
+        ]).sort({_id:1}).toArray()
+       
+       
+      res(report)
+    })
+   },
+
+   getDateReport:(From,To)=>{
+    return new Promise(async(res,rej)=>{
+       let reportArray=await db.get().collection(collections.ORDER).aggregate([
+        {
+            $match:{Time:{$gte:From,$lte:To}}
+        },
+        {
+            $lookup:{
+                from:collections.UDATA,
+                localField:'user',
+                foreignField:'_id',
+                as:'Name'
+            }
+        },
+        {
+            $lookup:{
+                from:collections.PRODATA,
+                localField:'products.item',
+                foreignField:'_id',
+                as:'Product'
+            }
+        }
+       ]).toArray()
+      console.log(reportArray);
+       res(reportArray)
+    })
+   },
+
+//    getExact:()=>{
+//     return new Promise((res,rej)=>{
+//         let exact=await db.get().collection(collections.)
+//     })
+//    }
 
    
 

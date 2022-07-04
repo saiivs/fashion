@@ -206,6 +206,7 @@
                   <th scope="col">SL.NO</th>
                   <th scope="col">COUPON CODE</th>
                   <th scope="col">OFFER</th>
+                  <th scope="col">VALIDITY</th>
                   <th scope="col">ACTION</th>
 
                 </tr>
@@ -218,6 +219,7 @@
                   <td>{{inc @index}}</td>
                   <td class="tm-product-name font-weight-light">{{this.Coupon_Name}}</td>
                   <td class="tm-product-name font-weight-light">{{this.Coupon_Value}}%</td>
+                  <td class="tm-product-name font-weight-light">{{this.Coupon_Date}}</td>
                   
 
 
@@ -255,6 +257,10 @@
                    <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Offer:</label>
                       <input type="text" name="Coupon_Value" class="form-control" id="recipient-name">
+                    </div>
+                   <div class="mb-3">
+                      <label for="recipient-name" class="col-form-label">Validity:</label>
+                      <input type="date" name="Coupon_Date" class="form-control" id="recipient-name">
                     </div>
                 </div>
                 <div class="modal-footer">

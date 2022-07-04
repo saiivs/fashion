@@ -6,12 +6,14 @@ var logger = require('morgan');
 var helpers=require('handlebars-helpers')
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
+
 var hbs = require('express-handlebars');
+const HBS = hbs.create({});
 const paypal = require('paypal-rest-sdk');
 
 var fileUpload = require('express-fileupload')
 
-
+ 
 
 var app = express();
 var db = require('./config/conection')
@@ -43,6 +45,13 @@ app.use(session({secret:"key",cookie:{maxAge:600000}}))
 db.connect((err)=>{
   if(err) console.log("error");
   else console.log("Database connected to 27017");
+})
+
+HBS.handlebars.registerHelper("ifCound",function(v1,v2,options){
+  if(v1==v2){
+    return options.fn(this)
+  }
+  return options.inverse(this) 
 })
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);

@@ -1,4 +1,4 @@
-<section  style="background-color: #f4f5f7;">
+<section style="background-color: #f4f5f7;">
   <div class="container py-5 h-80">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col col-lg-6 mb-4 mb-lg-0">
@@ -6,10 +6,10 @@
           <div class="row g-0">
             <div class="col-md-4 gradient-custom text-center text-white"
               style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar"
+                class="img-fluid my-5" style="width: 80px;" />
               <h5>{{profile.username}}</h5>
-              
+
             </div>
             <div class="col-md-8">
               <div class="card-body p-4">
@@ -34,158 +34,189 @@
                   </div>
                   <div class="col-6 mb-3">
                     <h6>Password</h6>
-                  <!-- Button trigger modal -->
-<button type="button" style="font-size: smaller;" class="btn btn-primary " data-toggle="modal" data-target="#staticBackdrop">
- Change Password
-</button>
+                    <!-- Button trigger modal -->
+                    <button type="button" style="font-size: smaller;" class="btn btn-primary " data-toggle="modal"
+                      data-target="#staticBackdrop">
+                      Change Password
+                    </button>
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       <form id="changePassword">
-  <div class="form-group">
-    <span class="text-danger" id="ERR_1"></span>
-    <label for="exampleInputEmail1">Old Password</label>
-    <input type="text" name="old_Pass" onkeyup="validOld()" class="form-control" id="f1" aria-describedby="emailHelp" placeholder="Password">
-    {{!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
-  </div>
-  <hr>
-  <div class="form-group">
-    <span class="text-danger" id="ERR_2"></span>
-    <label for="exampleInputPassword1">New Password</label>
-    <input type="text" name="new_Pass" onkeyup="validNew()" class="form-control" id="f2"  placeholder="Password">
-  </div>
-  <div class="form-group">
-    <span class="text-danger" id="ERR_3"></span>
-    <label for="exampleInputPassword1">Confirm Password</label>
-    <input type="text" name="con_Pass" onkeyup="validConf()" class="form-control" id="f3"  placeholder="Password">
-  </div>
-  {{!-- <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div> --}}
-  {{!-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                            <span aria-hidden="true">&times;</span>
+                          </div>
+                          <div class="modal-body">
+                            <form id="changePassword">
+                              <div class="form-group">
+                                <span class="text-danger" id="ERR_1"></span>
+                                <label for="exampleInputEmail1">Old Password</label>
+                                <input type="text" name="old_Pass" onkeyup="validOld()" class="form-control" id="f1"
+                                  aria-describedby="emailHelp" placeholder="Password">
+                                {{!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email
+                                  with anyone else.</small> --}}
+                              </div>
+                              <hr>
+                              <div class="form-group">
+                                <span class="text-danger" id="ERR_2"></span>
+                                <label for="exampleInputPassword1">New Password</label>
+                                <input type="text" name="new_Pass" onkeyup="validNew()" class="form-control" id="f2"
+                                  placeholder="Password">
+                              </div>
+                              <div class="form-group">
+                                <span class="text-danger" id="ERR_3"></span>
+                                <label for="exampleInputPassword1">Confirm Password</label>
+                                <input type="text" name="con_Pass" onkeyup="validConf()" class="form-control" id="f3"
+                                  placeholder="Password">
+                              </div>
+                              {{!-- <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                              </div> --}}
+                              {{!-- <button type="submit" class="btn btn-primary">Submit</button> --}}
 
-      </div>
-      <div class="modal-footer">
-        {{!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-        <button type="submit" onclick="return valid()" class="btn btn-primary">update</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
+                          </div>
+                          <div class="modal-footer">
+                            {{!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            --}}
+                            <button type="submit" onclick="return valid()" class="btn btn-primary">update</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <h6>Orders</h6>
                 <hr class="mt-0 mb-4">
                 <div class="row pt-1">
-                  <section  style="background-color: #f9fbff;">
-  <div class="container  h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100 text-center">
-      <div class="col">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-light mt-1" data-toggle="modal"
-          data-target="#exampleModal">
-           Order info
-        </button>
+                  <section style="background-color: #f9fbff;">
+                    <div class="container  h-100">
+                      <div class="row d-flex justify-content-center align-items-center h-100 text-center">
+                        <div class="col">
+                          <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-light mt-1" data-toggle="modal"
+                            data-target="#exampleModal">
+                            Order info
+                          </button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header border-bottom-0">
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body text-start text-black p-4">
-                
-                <h4 class="mb-5" style="color: #35558a;">Order History</h4>
-                
-                <hr class="mt-2 mb-4"
-                  style="height: 0; background-color: transparent; opacity: .75; border-top: 2px dashed #9e9e9e;">
-                {{#each order}}
-                <div class="d-flex justify-content-between">
-                    
-                  <p class="fw-bold mb-0">Date:</p>
-                  <p class="text-muted mb-0">{{this.Date}}</p>
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header border-bottom-0">
+                                  <button type="button" class="close" data-dismiss="modal"
+                                    aria-label="Close"></button><span aria-hidden="true">&times;</span>
+                                </div>
+                                <div class="modal-body text-start text-black p-4">
+
+                                  <h4 class="mb-5" style="color: #35558a;">Order History</h4>
+
+                                  <hr class="mt-2 mb-4"
+                                    style="height: 0; background-color: transparent; opacity: .75; border-top: 2px dashed #9e9e9e;">
+                                  {{#each order}}
+                                  <div class="d-flex justify-content-between">
+
+                                    <p class="fw-bold mb-0">Date:</p>
+                                    <p class="text-muted mb-0">{{this.Date}}</p>
+                                  </div>
+
+                                  <div class="d-flex justify-content-between">
+                                    <p class="small mb-0">Payment Method:</p>
+                                    <p class="small mb-0">{{this.paymentMethod}}</p>
+                                  </div>
+
+                                  <div class="d-flex justify-content-between pb-1">
+                                    <p class="small mb-0">Status:</p>
+                                    <p class="small mb-0">{{this.status}}</p>
+                                  </div>
+                                  <div class="d-flex justify-content-between pb-1">
+                                    <p class="small mb-0">Address:</p>
+                                    <p class="small mb-0">
+                                      {{this.address.ST}},{{this.address.AP}},{{this.address.town}},{{this.address.country}},{{this.address.postCode}}
+                                    </p>
+                                  </div>
+                                  {{#each this.products}}
+
+                                  <div class="d-flex justify-content-between pb-1">
+
+                                    <p class="small mb-0">product:</p>
+                                    <p class="small mb-0" style="color: #35558a;">{{this.name}}</p>
+
+                                  </div>
+                                  <div class="d-flex justify-content-between pb-1">
+
+
+
+                                  </div>
+
+                                  {{/each}}
+                                  {{!-- {{#this.quantity}}
+                                  <div class="d-flex justify-content-between pb-1">
+                                    <p class="small mb-0">quantity:</p>
+                                    <p class="small mb-0">{{this}}</p>
+                                  </div>
+                                  {{/this.quantity}} --}}
+
+                                  <div class="d-flex justify-content-between">
+
+                                    <p class="fw-bold">Total:</p>
+                                    <p class="fw-bold" style="color: #35558a;">{{this.totalPrice}}</p>
+
+                                  </div>
+                                  {{#ifCound this.status "DELIVERED"}}
+                                  <div class="d-flex justify-content-between">
+
+                                    <a class="btn btn-success text-white rounded" style="cursor: default;"
+                                      >Delivered</a>
+
+                                  </div>
+                                  {{else}}
+                                  {{#ifCound this.status "CANCEL"}}
+                                  <div class="d-flex justify-content-between">
+
+                                    <a class="btn btn-danger text-white rounded" style="cursor: default;"
+                                      >Cancelled</a>
+
+                                  </div>
+                                  {{else}}
+                                  <div class="d-flex justify-content-between">
+
+                                    <a class="btn btn-dark text-white rounded"
+                                      onclick="cancelUser('{{this._id}}')">Cancel</a>
+
+                                  </div>
+                                  {{/ifCound}}
+                                  {{/ifCound}}
+
+                                  <hr class="mt-2 mb-4"
+                                    style="height: 0; background-color: transparent; opacity: .75; border-top: 2px dashed #9e9e9e;">
+                                  {{/each}}
+
+                                </div>
+
+                                {{!-- <div class="modal-footer d-flex justify-content-center border-top-0 py-4">
+                                  <button type="button" class="btn btn-primary btn-lg mb-1"
+                                    style="background-color: #35558a;">
+                                    Track your order
+                                  </button> --}}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
                 </div>
 
-                <div class="d-flex justify-content-between">
-                  <p class="small mb-0">Payment Method:</p>
-                  <p class="small mb-0">{{this.paymentMethod}}</p>
-                </div>
-
-                <div class="d-flex justify-content-between pb-1">
-                  <p class="small mb-0">Status:</p>
-                  <p class="small mb-0">{{this.status}}</p>
-                </div>
-                <div class="d-flex justify-content-between pb-1">
-                  <p class="small mb-0">Address:</p>
-                  <p class="small mb-0">{{this.address.ST}},{{this.address.AP}},{{this.address.town}},{{this.address.country}},{{this.address.postCode}}</p>
-                </div>
-                 {{#each this.products}}
-                 
-                 <div class="d-flex justify-content-between pb-1">
-                  
-                  <p class="small mb-0">product:</p>
-                  <p   class="small mb-0" style="color: #35558a;">{{this.name}}</p>
-                 
-                </div>
-                 <div class="d-flex justify-content-between pb-1">
-                  
-                 
-                 
-                </div>
-                
-                 {{/each}}
-                 {{!-- {{#this.quantity}}
-                  <div class="d-flex justify-content-between pb-1">
-                  <p class="small mb-0">quantity:</p>
-                  <p class="small mb-0">{{this}}</p>
-                </div>
-                {{/this.quantity}} --}}
-
-                <div class="d-flex justify-content-between">
-                    
-                  <p class="fw-bold">Total:</p>
-                  <p class="fw-bold" style="color: #35558a;">{{this.totalPrice}}</p>
-                    
-                </div>
-                 <div class="d-flex justify-content-between">
-                    
-                 <a class="btn btn-dark text-white rounded"  onclick="cancelUser('{{this._id}}')">Cancel</a>
-                    
-                </div>
-               
-                  <hr class="mt-2 mb-4"
-                  style="height: 0; background-color: transparent; opacity: .75; border-top: 2px dashed #9e9e9e;">
-                {{/each}}
-                 
-              </div>
-               
-              {{!-- <div class="modal-footer d-flex justify-content-center border-top-0 py-4">
-                <button type="button" class="btn btn-primary btn-lg mb-1" style="background-color: #35558a;">
-                  Track your order
-                </button> --}}
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-                  
-                </div>
-                
               </div>
             </div>
           </div>
@@ -197,58 +228,58 @@
 
 <script>
 
-  function validOld(){
-    let val=document.getElementById('f1').value
-    let messg=document.getElementById('ERR_1')
-    if(val==''){
-      messg.innerHTML="Please Fill The field"
+  function validOld() {
+    let val = document.getElementById('f1').value
+    let messg = document.getElementById('ERR_1')
+    if (val == '') {
+      messg.innerHTML = "Please Fill The field"
       return false;
     }
-    if(val.length < 4){
-      messg.innerHTML="Invalid Password"
+    if (val.length < 4) {
+      messg.innerHTML = "Invalid Password"
       return false;
     }
-    messg.innerHTML=""
+    messg.innerHTML = ""
     return true;
   }
-  function validNew(){
-    let val=document.getElementById('f2').value
-    let messg=document.getElementById('ERR_2')
-    if(val==''){
-      messg.innerHTML="Please Fill The field"
+  function validNew() {
+    let val = document.getElementById('f2').value
+    let messg = document.getElementById('ERR_2')
+    if (val == '') {
+      messg.innerHTML = "Please Fill The field"
       return false;
     }
-    if(val.length < 4){
-      messg.innerHTML="Invalid Password"
+    if (val.length < 4) {
+      messg.innerHTML = "Invalid Password"
       return false;
     }
-    messg.innerHTML=""
+    messg.innerHTML = ""
     return true;
   }
-  function validConf(){
-    let val=document.getElementById('f3').value
-    let verify=document.getElementById('f2').value
-    let messg=document.getElementById('ERR_3')
-    if(val==''){
-      messg.innerHTML="Please Fill The field"
+  function validConf() {
+    let val = document.getElementById('f3').value
+    let verify = document.getElementById('f2').value
+    let messg = document.getElementById('ERR_3')
+    if (val == '') {
+      messg.innerHTML = "Please Fill The field"
       return false;
     }
-    if(val.length < 4){
-      messg.innerHTML="Invalid Password"
+    if (val.length < 4) {
+      messg.innerHTML = "Invalid Password"
       return false;
     }
-    if(val!=verify){
-      messg.innerHTML="Reconfirm Password"
+    if (val != verify) {
+      messg.innerHTML = "Reconfirm Password"
       return false;
     }
-    messg.innerHTML=""
+    messg.innerHTML = ""
     return true;
   }
-  function valid(){
-    if(!validOld()||!validNew()||!validConf()){
+  function valid() {
+    if (!validOld() || !validNew() || !validConf()) {
       return false;
     }
-    else{
+    else {
       return true;
     }
   }

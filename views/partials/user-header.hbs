@@ -102,7 +102,7 @@
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
                         {{!-- <a href="/login-user"><img style="width: 1.8rem;" src="img/icon/user.png" alt=""></a> --}}
-                         <a href="/wishlistpage"><img src="/img/icon/heart.png" alt=""><span class="badge  badge-white pt-2 ml-1" id="wishList">{{countW}}</span></a>
+                         <a href="/wishlistpage">{{#if heartRed}}<img id="heart" style="width: 1.5rem;" src="/img/icon/Colorheart.png" alt="">{{else}}<img id="heart" src="/img/icon/heart.png" alt="">{{/if}}<span class="badge  badge-white pt-2 ml-1" id="wishList">{{countW}}</span></a>
                         {{!-- <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a> --}}
                        
                         {{!-- <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>

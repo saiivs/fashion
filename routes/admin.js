@@ -1,15 +1,16 @@
 var express = require('express');
 const async = require('hbs/lib/async');
+const { route } = require('.');
 
 var router = express.Router();
 var helper = require('../helper/func')
 
 function verify(req,res,next){
  if(req.session.adminLog){
-  res.redirect('/admin/AdminPanel')
+  next()
  }
  else{
-  next()
+ res.redirect('/admin')
  }
 }
 
@@ -32,9 +33,26 @@ Credential={
   username:"sai",
   Password:12345
 }
-router.get('/AdminPanel',(req,res)=>{
+router.get('/AdminPanel',async(req,res)=>{
   if(req.session.adminLog){
-    res.render('admin/index',{admin:true,head:true,index:true});
+    let report=await helper.getTotalReport()
+    let Cod=0;
+    let razor=0
+    let paypal=0
+    for(let i of report){
+      if(i._id=='COD'){
+        Cod=i.total
+      }else if(i._id=='paypal'){
+        paypal=i.total
+      }else{
+        razor=i.total
+      }
+    }
+    
+    // let codTotal=COD.total 
+    // let paypalTotal=paypal.total
+    // let razorTotal=Razor.total
+    res.render('admin/index',{admin:true,head:true,index:true,Cod,paypal,razor});
   }
   else{
     res.redirect('/admin')
@@ -52,15 +70,13 @@ router.post('/Panel',(req,res)=>{
   }
 })
 
-router.get('/user-list',(req,res)=>{
+router.get('/user-list',verify,(req,res)=>{
   helper.getData().then((data)=>{
     res.render('admin/user-list',{admin:true,head:true,index:true,data})
-  })
-  
+  }) 
 })
 
-router.get('/block/:id',(req,res)=>{
-  
+router.get('/block/:id',verify,(req,res)=>{ 
 let bid=req.params.id
 console.log(bid);
 helper.blockuser(bid).then((data)=>{
@@ -69,14 +85,14 @@ helper.blockuser(bid).then((data)=>{
 })
 })
 
-router.get('/unblock/:id',(req,res)=>{
+router.get('/unblock/:id',verify,(req,res)=>{
   let dib=req.params.id
   helper.unblockuser(dib).then((data)=>{
     res.json({status:true})
   })
 })
 
-router.get('/products',(req,res)=>{
+router.get('/products',verify,(req,res)=>{
   helper.getProducts().then((products)=>{
     helper.getCatog().then((catog)=>{
   
@@ -89,16 +105,14 @@ router.get('/products',(req,res)=>{
   
 })
 
-router.get('/add-products',(req,res)=>{
+router.get('/add-products',verify,(req,res)=>{
   helper.getCatog().then((catog)=>{
-    
     res.render('admin/add-product',{catog})
   })
   
-})
+}) 
 
 router.post('/add-products',(req,res)=>{
-  
   console.log(req.files.image);
   helper.addProducts(req.body).then((id)=>{
     let image=req.files.image;
@@ -113,7 +127,7 @@ router.post('/add-products',(req,res)=>{
   })  
 })
 
-router.get('/del-pro/:id',(req,res)=>{
+router.get('/del-pro/:id',verify,(req,res)=>{
   console.log("haiiiiiiiiiii");
   let delpro=req.params.id;
   helper.delProducts(delpro).then((result)=>{
@@ -121,7 +135,7 @@ router.get('/del-pro/:id',(req,res)=>{
   })
 })
 
-router.get('/edit-pro/:id',(req,res)=>{
+router.get('/edit-pro/:id',verify,(req,res)=>{
   let editpro=req.params.id;
   helper.getedit(editpro).then((result)=>{
    helper.getCatog().then((catog)=>{
@@ -134,7 +148,7 @@ router.get('/edit-pro/:id',(req,res)=>{
   })
 })
 
-router.get('/edit-img',(req,res)=>{
+router.get('/edit-img',verify,(req,res)=>{
   helper.getedit(editpro).then((result)=>{
     
     res.render('admin/edit-products',{result})
@@ -157,7 +171,7 @@ router.post('/edit-pro/:id',(req,res)=>{
 
 })
 
-router.get('/Add-catog',(req,res)=>{
+router.get('/Add-catog',verify,(req,res)=>{
   res.render('admin/Addcat',{ER:req.session.ErR})
   req.session.ErR=false;
 })
@@ -203,15 +217,13 @@ router.get('/delcat/:id/:name',(req,res)=>{
   
 })
 
-router.get('/editcat/:id',(req,res)=>{
+router.get('/editcat/:id',verify,(req,res)=>{
   helper.geteditcatog(req.params.id).then((data)=>{
     res.render('admin/editcat',{data})
   })
 })
 
 router.post('/editcat/:id',(req,res)=>{
-  console.log("haiiiiiiiii");
-  
    helper.editcatog(req.params.id,req.body).then((data)=>{
      res.redirect('/admin/products')
    })
@@ -219,18 +231,15 @@ router.post('/editcat/:id',(req,res)=>{
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.orderList>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-router.get('/orderList',(req,res)=>{
+router.get('/orderList',verify,(req,res)=>{
   helper.getOrderAdmin().then(async(order)=>{
+    
     if(req.session.cancel){
-      console.log('work anooooooooooo');
-      console.log(req.session.cancel);
       res.render('admin/orderList',{order,cancel:req.session.cancel})
-      console.log(req.session.cancel);
-     // req.session.cancel=false;
     }
     else{
-      console.log('ivdeyanooooooooooooooo');
       res.render('admin/orderList',{order})
+      
     }
     // let name=await helper.getUser(order.user)
     // console.log(name);
@@ -238,6 +247,24 @@ router.get('/orderList',(req,res)=>{
     
   })
    
+})
+
+router.post('/updateStatus', async(req,res)=>{
+  console.log('objecttttttttttttttttttttt');
+  console.log(req.body);
+  let {selected,ID,userID} =req.body
+  console.log(selected,ID,userID);
+  
+  if(selected=="DELIVERED"){
+      let DONE=await helper.Deliver(ID,userID)
+      console.log(DONE);
+     
+  }
+  
+  
+  helper.adminUpdateStatus(selected,ID).then(()=>{
+    res.json({status:true})
+  })
 })
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>cancel>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
@@ -251,7 +278,7 @@ router.get('/cancel/:id',(req,res)=>{
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>BANNERS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-router.get('/Banner',(req,res)=>{
+router.get('/Banner',verify,(req,res)=>{
  
   helper.getBanner().then(async(banner)=>{
     let Coupons=await helper.getCoupon()
@@ -281,7 +308,7 @@ router.post('/banner_data',(req,res)=>{
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>offers>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-router.get('/offers',(req,res)=>{
+router.get('/offers',verify,(req,res)=>{
   helper.getOffer().then((offer)=>{
     res.render('admin/offers',{offer})
   })
@@ -294,7 +321,7 @@ router.post('/offer',(req,res)=>{
   })
 })
 
-router.get('/applyOffer',(req,res)=>{
+router.get('/applyOffer',verify,(req,res)=>{
   helper.getProducts().then((pro)=>{
     helper.getOffer().then((offer)=>{
       // console.log('checkingggggggggggggggg');
@@ -335,7 +362,26 @@ router.post('/Coupon',(req,res)=>{
     res.redirect('/admin/Banner')
   })
 })
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>report>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
+router.get('/Report',verify,(req,res)=>{
+  let report=req.session.report
+  res.render('admin/report',{report})
+})
+
+router.post('/takeReport',(req,res)=>{
+  let from=new Date(req.body.start) 
+  let to=new Date(req.body.end)
+  helper.getDateReport(from,to).then((report)=>{
+    // helper.getExact(report).then(())
+    req.session.report=report;
+    res.redirect('/admin/Report')
+  })
+  
+  
+  
+  
+})
 
 
 

@@ -81,19 +81,19 @@
               BANNERS & COUPONS
             </a>
           </li>
-           <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-gift" aria-hidden="true"></i>
-                                <span>
-                                    OFFERS 
-                                </span>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/admin/offers">Add Offers</a>
-                                <a class="dropdown-item" href="/admin/applyOffer">Apply Offers</a>
-                            </div>
-                        </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-gift" aria-hidden="true"></i>
+              <span>
+                OFFERS
+              </span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/admin/offers">Add Offers</a>
+              <a class="dropdown-item" href="/admin/applyOffer">Apply Offers</a>
+            </div>
+          </li>
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -139,8 +139,7 @@
                   </td>
 
                   <td>
-                    <a onclick="deletePro('{{this.id}}','{{this.name}}')"
-                      class="tm-product-delete-link">
+                    <a onclick="deletePro('{{this.id}}','{{this.name}}')" class="tm-product-delete-link">
                       <i class="far fa-trash-alt tm-product-delete-icon"></i>
                     </a>
                   </td>
@@ -211,7 +210,7 @@
                   </td>
                 </tr>
                 {{/each}}
-                
+
               </tbody>
             </table>
           </div>
@@ -258,7 +257,8 @@
       $('#myTable').DataTable();
     });
   </script>
-  {{!-- <script>
+  {{!--
+  <script>
     var Handlebars = require('handlebars');
 
     Handlebars.registerHelper("inc", function (value, options) {

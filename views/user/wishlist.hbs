@@ -14,6 +14,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#if list.[0].wishProduct}}
                                 {{#each list.[0].wishProduct}}
                                 <tr>
                                     <td class="product__cart__item">
@@ -30,6 +31,11 @@
                                     <td onclick="cancel('{{this._id}}')" class="cart__close"><i class="fa fa-close"></i></td>
                                 </tr>
                                 {{/each}}
+                                {{else}}
+                                <tr>
+                                    <td class="text-center"><h4 class="font-weight-bold">WISHLIST IS EMPTY</h4><img style="width: 10rem;" src="/img/icon/empty.png" alt=""></td>
+                                </tr>
+                                {{/if}}
                                 {{!-- <tr>
                                     <td class="product__cart__item">
                                         <div class="product__cart__item__pic">

@@ -57,7 +57,7 @@
                                 {{/each}}
                                 {{else}}
                                 <tr>
-                                    <td><h4 class="text-dark text-center font-weight-light">NO PRODUCTS IN THE CART</h4></td>
+                                    <td class="text-center"><h4 class="text-dark  font-weight-bold">NO PRODUCTS IN THE CART</h4><img style="width: 10rem;" src="/img/icon/empty.png" alt=""></td>
                                 </tr>
                                 {{/if}}
                                 {{!-- <tr>
@@ -155,7 +155,7 @@
                             <li>TOTAL <span id="subtotal" >{{preDeduction}}</span></li>
                             <li>OFFER <span id="off">{{offer}}</span><span>-</span></li>
                            
-                            <li>COUPON <span id="Code">{{coupon}}</span><span>-</span></li>
+                            <li>COUPON <span id="Code">{{value}}</span><span>-</span></li>
                            
                             <hr>
                             <li>SUBTOTAL <span id="total" >{{total}}</span></li>

@@ -1,3 +1,4 @@
+
 function Block(id,name){
   alert('ca,meeeeeeeeee')
     
@@ -159,4 +160,65 @@ function Rmv(id){
       }
     })
 }
+
+function status(selected,ID,userID){
+  console.log(selected);
+  console.log(ID);
+  $.ajax({
+      url:'/admin/updateStatus',
+      data:{
+          selected,ID,userID
+      },
+      method:'post',
+      success:(response)=>{
+        if(response){
+          location.reload()
+        }
+         
+      }
+  
+  })
+}
+
+window.onload=function(){
+  console.log('haiiiiiiiiiiiiiiiii');
+  document.getElementById('PDF').addEventListener('click',()=>{
+    const pdf=this.document.getElementById('myTable')
+    console.log(pdf);
+    console.log(window);
+    let opt = {
+      margin:       1,
+      filename:     'Report.pdf',
+      image:        { type: 'jpg', quality: 0.98 },
+      html2canvas:  { scale: 4 },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
+    };
+    
+    html2pdf().from(pdf).set(opt).save();
+  }) 
+}
+
+
+
+
+// $('#report').submit((e)=>{
+//   e.preventDefault()
+//   console.log('haiiiiiiiiiiiiiiiiiiiii');
+//   $.ajax({
+//     url:'/admin/takeReport',
+//     data:$('#report').serialize(),
+//     method:'post',
+//     success:(response)=>{
+//       if(response){
+//         alert('hai')
+//       }
+//     }
+//   })
+
+// })
+
+
+
+
+
 

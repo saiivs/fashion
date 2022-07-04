@@ -415,3 +415,15 @@
 </body>
 
 </html>
+<td class="text-success">   
+                    <select
+                      class="custom-select tm-select-accounts"
+                      id="category" name="Status"
+                    >
+                      <option selected>{{this.status}}</option>
+                      
+                      <a href="/admin/updateStatus/{{this._id}}/SHIPPED"><option  value="SHIPPED">SHIPPED</option></a>
+                      <a href="/admin/updateStatus/{{this._id}}/CANCEL"><option value="CANCEL">CANCEL</option></a>
+                      <a href="/admin/updateStatus/{{this._id}}/DELIVERED"><option value="DELIVERED">DELIVERED</option></a>
+                      
+                    </select></td>

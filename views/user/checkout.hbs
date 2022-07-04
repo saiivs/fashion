@@ -156,19 +156,22 @@
                 
                 <form action="" id="checkOut">
                     <div class="row">
-                        <div class="col-lg-8 col-md-6">
-
+                        <div class="col-lg-7 col-md-6">
+                            {{#if Address}}
                             <button class="btn btn-dark coupon__code py-1 px-2" type="button" data-toggle="collapse"
                                 data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                 Saved Address
                             </button>
-                            <div class="collapse" id="collapseExample">
-                                <div class="card card-body">
+                            {{/if}}
+                            <div class="collapse"  id="collapseExample">
+                                <div class="card card-body" style="background-color: #f3f2ee;">
                                     
-                                        <p>Select One Address:</p>
+                                        <p class="font-weight-bold">Select One Address:</p>
+
                                         {{#each Address}}
-                                        <input type="radio" id="age1" name="radio" value="{{this._id}}">
-                                        <label for="age2">{{this.name}}<br>{{this.country}},{{this.STaddress}}<br>{{this.APaddress}},{{this.Town_city}}<br>{{this.email}},{{this.phone}}</label><br>
+                                        <input style="width: 11px;" type="radio" id="age1" name="radio" value="{{this._id}}">
+                                        <label  for="age2">{{this.name}}<br>{{this.country}},{{this.STaddress}}<br>{{this.APaddress}},{{this.Town_city}}<br>{{this.email}},{{this.phone}}</label><br>
+                                        <hr>
                                         {{/each}}
                                         {{!-- <input type="radio" id="age2" name="age" value="60">
                                         <label for="age2">31 - 60</label><br>
@@ -292,7 +295,7 @@
                                 <ul class="checkout__total__all">
                                     <li>Total <span>{{preDeduction}}</span></li>
                                     <li>Offer <span>{{offer}}</span><span>-</span></li>
-                                    <li>Coupon <span>{{coupon}}</span><span>-</span></li>
+                                    <li>Coupon <span>{{value}}</span><span>-</span></li>
                                     <li>Subtotal <span>{{total}}</span></li>
                                     
                                     {{!-- <li>Total <span>$750.99</span></li> --}}

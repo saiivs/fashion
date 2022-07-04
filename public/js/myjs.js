@@ -43,11 +43,13 @@ function changeQuantity(cartId,prodId,count,name,price){
             else{
                 let total=response.total
                 let offer=response.offer
+                let Coupon=response.Coupon
                document.getElementById(prodId).innerHTML=quantity+count
                document.getElementById(name).innerHTML=price*(quantity+count)
-               document.getElementById('total').innerHTML=total-offer
+               document.getElementById('total').innerHTML=total-offer-Coupon
                document.getElementById('subtotal').innerHTML=total
                document.getElementById('off').innerHTML=offer
+               document.getElementById('Code').innerHTML=Coupon
 
             }  
         }
@@ -173,15 +175,44 @@ function verifyPayment(payment,order){
 
 // >>>>>>>>>>>>>>>>>>>>wishlist>>>>>>>>>>>>>>>>>>>>>>>>
 
-function wish(id){
-    $.ajax({
-        url:'/wishList/'+id,
+function wish(id){    
+    $.ajax({  
+        url:'/wishList/'+id,  
         method:'get',
         success:(response)=>{
-            
+            if(response.status){
+                let heart=document.querySelector('#heart')
+                let change=document.querySelector('#'+'R'+id)
+                change.src="img/icon/heart.png"
+                heart.src="img/icon/heart.png"
+                location.href='/removelist/'+id
+                
+
+            }else{
+                let heart=document.querySelector('#heart')
+                let change= document.querySelector('#'+'R'+id)
+                change.src="img/icon/Colorheart.png"
+                heart.src="img/icon/Colorheart.png"
+                document.getElementById('R'+id).style.width = "2.5rem";  
+                document.getElementById('heart').style.width = "1.5rem";  
         }
+        }   
     })
 }
+
+// function wishCancel(id){
+//     $.ajax({
+//         url:'/removelist/'+id,
+//         method:'get',
+//         success:(response)=>{
+//             if(response){
+//                 let change= document.querySelector('#'+'R'+id)
+//                 change.src="img/icon/heart.png"
+//                 // location.reload() 
+//             }
+//         }
+//     })
+// }
 
 function cancel(id){
     swal({
@@ -192,10 +223,10 @@ function cancel(id){
       }).then((willDelete)=>{
         if(willDelete){
             $.ajax({
-                url:'/removelist/'+id,
+                url:'/CancelList/'+id,
                 method:'get',
                 success:(response)=>{
-                    if(response){
+                    if(response.status){
                         swal("Product Removed", {
                             icon: "success",
                           }).then(()=>{
@@ -265,10 +296,7 @@ $('#Coupon').submit((e)=>{
             }
             else if(response.notequal){
                 let ERR=document.getElementById('ERR')
-                // let SUCC=document.getElementById('SUCC')
-                // SUCC.innerHTML=""
-                ERR.innerHTML='ONLY ONE COUPON IS APPLICABLE'
-                
+                ERR.innerHTML='ONLY ONE COUPON IS APPLICABLE'   
             }else{
                 if(response.status){
                     let ERR=document.getElementById('ERR')
@@ -281,12 +309,18 @@ $('#Coupon').submit((e)=>{
                     
                 }
                 else{
+                    if(response.Expired){
+                        let ERR=document.getElementById('ERR')
+                        ERR.innerHTML='COUPON EXPIRED'
+                    }else{
+                        location.reload()
+                    }
                    
-                    location.reload()
+                   
                     
                 }
             }
-            
+           
            
         }
     })
@@ -333,6 +367,4 @@ $('#changePassword').submit((e)=>{
         }
     })
 })
-
-
 
