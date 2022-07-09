@@ -91,9 +91,6 @@ function cancel(id){
                         }).then(()=>{
                           
                           location.href='/admin/orderList'
-                         
-                         
-                          
                         })     
                   }
               }
@@ -180,23 +177,6 @@ function status(selected,ID,userID){
   })
 }
 
-window.onload=function(){
-  console.log('haiiiiiiiiiiiiiiiii');
-  document.getElementById('PDF').addEventListener('click',()=>{
-    const pdf=this.document.getElementById('myTable')
-    console.log(pdf);
-    console.log(window);
-    let opt = {
-      margin:       1,
-      filename:     'Report.pdf',
-      image:        { type: 'jpg', quality: 0.98 },
-      html2canvas:  { scale: 4 },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
-    };
-    
-    html2pdf().from(pdf).set(opt).save();
-  }) 
-}
 
 
 

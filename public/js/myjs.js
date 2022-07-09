@@ -13,6 +13,7 @@ function addToCart(prodId){
                let count=$('#Add-Cart').html()
                count=parseInt(count)+1
                $('#Add-Cart').html(count)
+               swal("ADDED")
             } 
         }
     })
@@ -76,7 +77,11 @@ function removePro(cart,prodId){
                         swal("Product Removed", {
                             icon: "success",
                           }).then(()=>{
-                            location.reload()
+                            // document.getElementById('TP'+prodId).innerHTML=""
+                            // let count=$('#Add-Cart').html()
+                            // count=parseInt(count)-1
+                            // $('#Add-Cart').html(count)
+                            location.reload()            
                           })   
                     }   
                 }
@@ -180,22 +185,40 @@ function wish(id){
         url:'/wishList/'+id,  
         method:'get',
         success:(response)=>{
-            if(response.status){
-                let heart=document.querySelector('#heart')
-                let change=document.querySelector('#'+'R'+id)
-                change.src="img/icon/heart.png"
-                heart.src="img/icon/heart.png"
-                location.href='/removelist/'+id
-                
-
-            }else{
-                let heart=document.querySelector('#heart')
-                let change= document.querySelector('#'+'R'+id)
-                change.src="img/icon/Colorheart.png"
-                heart.src="img/icon/Colorheart.png"
-                document.getElementById('R'+id).style.width = "2.5rem";  
-                document.getElementById('heart').style.width = "1.5rem";  
-        }
+                if(response.status){
+                    let heart=document.querySelector('#heart')
+                    let change=document.querySelector('#'+'R'+id)
+                    change.src="img/icon/heart.png"
+                    if(response.count){
+                        heart.src="img/icon/Colorheart.png"
+                    }
+                    else{
+                        heart.src="img/icon/heart.png"    
+                    }
+                    document.getElementById('R'+id).style.width = "2.5rem";  
+                    document.getElementById('heart').style.width = "1.5rem";  
+                }else{
+                    console.log('else caseeeeeeeeeeeeee');
+                    let heart=document.querySelector('#heart')
+                    let change= document.querySelector('#'+'R'+id)
+                    change.src="img/icon/Colorheart.png"
+                    document.getElementById('R'+id).style.width = "2.5rem";
+                    if(response.count){
+                        
+                        heart.src="img/icon/Colorheart.png"
+                        document.getElementById('heart').style.width = "1.5rem";
+                    }
+                    else{
+                        heart.src="img/icon/heart.png"    
+                    }
+                   
+                     
+            
+            }
+               
+            
+            
+           
         }   
     })
 }

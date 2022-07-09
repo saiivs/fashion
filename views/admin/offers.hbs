@@ -195,28 +195,30 @@
                 <form action="/admin/offer" method="post">
                   <div class="modal-body">
 
-                    <span class="text-danger" id="Name_ER"></span>
+                    
                     <label class="form-label" for="form3Example1cg">OFFER NAME</label>
-                    <input type="text" name="offername" id="ERR-1" onkeyup="valid()"
+                    <input type="text" name="offername" id="ERRR-1" onkeyup="validOfferName()"
                       class="form-control form-control-lg" />
-                      <span></span>
+                      <span class="text-danger" style="font-size: smaller;" id="er-1"></span>
                   </div>
                   <div class="modal-body">
 
-                    <span class="text-danger" id="Name_ER"></span>
+                    
                     <label class="form-label" for="form3Example1cg">PERCENTAGE</label>
-                    <input type="number" name="percentage" id="ERR-1" onkeyup="valid()"
+                    <input type="number" name="percentage" id="ERRR-2" onkeyup="validPer()"
                       class="form-control form-control-lg" />
+                      <span class="text-danger" style="font-size: smaller;" id="er-2"></span>
                   </div>
                   <div class="modal-body">
-                    <span class="text-danger" id="Name_ER"></span>
+                    
                     <label class="form-label" for="form3Example1cg">VALIDITY</label>
-                    <input type="date" name="validity" id="ERR-1" onkeyup="valid()"
+                    <input type="date" name="validity" id="ERRR-3" onkeyup="validValidity()"
                       class="form-control form-control-lg" />
+                      <span class="text-danger" style="font-size: smaller;" id="er-3"></span>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">ADD OFFER</button>
+                    <button type="submit" onclick="return Validation()" class="btn btn-primary">ADD OFFER</button>
                   </div>
                 </form>
               </div>
@@ -292,6 +294,56 @@
     $(document).ready(function () {
         $('#myTable').DataTable();
     });
+</script>
+<script>
+    function validOfferName(){
+        let value=document.getElementById('ERRR-1').value
+        let ERROR=document.getElementById('er-1')
+        if(value==""){
+            ERROR.innerHTML="FILL THE FIELDS"
+            return false;
+        }
+        if(!value.match(/^[a-zA-Z-" "]*$/)){
+            ERROR.innerHTML="ONLY ALPHABETS ARE ALLOWED"
+            return false;
+        }
+        ERROR.innerHTML=""
+        return true;
+    }
+    function validPer(){
+        let value=document.getElementById("ERRR-2").value
+        let ERROR=document.getElementById('er-2')
+        if(value==""){
+            ERROR.innerHTML="FILL THE FIELDS"
+            return false;
+        }
+        if(!value.match(/^[0-9]/)){
+            ERROR.innerHTML="ONLY NUMBERS ARE ALLOWED"
+            return false;
+        }
+        ERROR.innerHTML=""
+        return true;
+    }
+    function validValidity(){
+        let value=document.getElementById('ERR-3').value
+        let ERROR=document.getElementById('er-3')
+        if(value==""){
+            ERROR.innerHTML="FILL THE FIELDS"
+            return false;
+        }
+        if(!value.match(/^[0-9]/)){
+            ERROR.innerHTML="ONLY NUMBERS ARE ALLOWED"
+            return false;
+        }
+        ERROR.innerHTML=""
+        return true;
+    }
+    function Validation(){
+        if(!validOfferName()||!validPer()||!validValidity()){
+            return false;
+        }
+        return true;
+    }
 </script>
 </body>
 

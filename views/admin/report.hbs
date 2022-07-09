@@ -144,98 +144,98 @@
 
 
 
-    <section  class="container  pt-4">
-        
+    <section class="container  pt-4">
+
         <div class="row">
             <div class="col-6 text-start">
-             <form  action="/admin/takeReport" method="post">
-            <div class="mt-1 mb-5 mx-1 px-2 d-flex">
-               
-               <div>
-                <label for="">From</label>
-                <input type="date" name="start" >
-               </div>
-               <div>
-                <label for="">To</label>
-                <input type="date" name="end">
-               </div>
-               
-               <div><button type="submit" class="btn-primary rounded mx-2">SUBMIT</button></div>
-               
+                <form action="/admin/takeReport" method="post">
+                    <div class="mt-1 mb-5 mx-1 px-2 d-flex">
+
+                        <div>
+                            <label for="">From</label>
+                            <input type="date" name="start">
+                        </div>
+                        <div>
+                            <label for="">To</label>
+                            <input type="date" name="end">
+                        </div>
+
+                        <div><button type="submit" class="btn-primary rounded mx-2">SUBMIT</button></div>
+
+                    </div>
+                </form>
             </div>
-             </form>
-             </div>
             {{!-- <div></div> --}}
-             <div class="col-6  text-end d-flex justify-content-end"><button id="PDF" class=" bg-white rounded" style="height: 50px;" href="">PDF</button><button id="EXCEL"  class=" bg-white rounded" style="height: 50px;">EXCEL
+            <div class="col-6  text-end d-flex justify-content-end"><button id="PDF" class=" bg-white rounded"
+                    style="height: 50px;" href="">PDF</button><button id="EXCEL" class=" bg-white rounded"
+                    style="height: 50px;">EXCEL
 
-             </button></div>
-               
-            
-            
-            <div  class="col-12 table-responsive " >
-                 <table id="myTable" class="">
-            <thead>
-                <tr>
-                    <th scope="col">Sl No</th>
-                    <th scope="col">username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Products</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">paymentMethod</th>
-                    <th scope="col">status</th>
-                    {{!-- <th scope="col">Action</th> --}}
-                    {{!-- <th scope="col">Edit</th>
-                    <th scope="col">Delete</th> --}}
-                </tr>
-            </thead>
-            <tbody>
-                {{#each report}}
-                <tr>
-                    <td class="text-center" scope="row">{{inc @index}}</td>
-                   
-                    <td>{{this.Name.[0].username}}</td>
-                    
+                </button></div>
 
-                    <td>{{this.Name.[0].email}}</td>
-                    <td>{{this.Name.[0].phone}}</td>
-                    <td>{{this.date}}</td>
 
-                    <td>{{#each Product}}
-                        <div>{{inc @index}}.{{this.name}}</div>
+
+            <div class="col-12 table-responsive ">
+                <table id="myTable" class="">
+                    <thead>
+                        <tr>
+                            <th scope="col">Sl No</th>
+                            <th scope="col">username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Products</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">paymentMethod</th>
+                            <th scope="col">status</th>
+                            {{!-- <th scope="col">Action</th> --}}
+                            {{!-- <th scope="col">Edit</th>
+                            <th scope="col">Delete</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each report}}
+                        <tr>
+                            <td class="text-center" scope="row">{{inc @index}}</td>
+
+                            <td>{{this.Name.[0].username}}</td>
+                            <td>{{this.Name.[0].email}}</td>
+                            <td>{{this.Name.[0].phone}}</td>
+                            <td>{{this.date}}</td>
+
+                            <td>{{#each Product}}
+                                <div>{{inc @index}}.{{this.name}}</div>
+                                {{/each}}
+                            </td>
+
+                            <td>{{this.totalPrice}}</td>
+                            <td class="text-center">{{this.paymentMethod}}</td>
+                            <td>{{this.status}}</td>
+
+
+
+
+                            {{!-- <td><a class="btn btn-outline-warning rounded" id="{{this._id}}"
+                                    onclick="cancel('{{this._id}}')">Cancel</a></td> --}}
+                            {{!-- {{else}}
+                            <td><a class="btn btn-outline-danger rounded">Order Return</a></td>
+                            {{/if}} --}}
+
+
+                            {{!-- <td><a class="btn btn-danger"
+                                    onclick=" return confirm('are you sure to delete {{this.name}}')"
+                                    href="/admin/delete-user/{{this._id}}">Delete</a></td> --}}
+
+                        </tr>
                         {{/each}}
-                    </td>
-
-                    <td>{{this.totalPrice}}</td>
-                    <td class="text-center">{{this.paymentMethod}}</td>
-                     <td>{{this.status}}</td>
-                   
-                     
-                   
-                    
-                    {{!-- <td><a class="btn btn-outline-warning rounded" id="{{this._id}}"
-                            onclick="cancel('{{this._id}}')">Cancel</a></td> --}}
-                    {{!-- {{else}}
-                    <td><a class="btn btn-outline-danger rounded">Order Return</a></td>
-                    {{/if}} --}}
 
 
-                    {{!-- <td><a class="btn btn-danger"
-                            onclick=" return confirm('are you sure to delete {{this.name}}')"
-                            href="/admin/delete-user/{{this._id}}">Delete</a></td> --}}
-
-                </tr>
-                {{/each}}
-
-
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
             </div>
-           
+
 
         </div>
-        
+
     </section>
 
 
@@ -252,7 +252,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/7f3cb1b9df.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/product-admin-master/js/table2excel.js"></script>
     <script src="/product-admin-master/js/admin.js"></script>
 
@@ -319,14 +321,28 @@
     $('#datepicker').datepicker("setDate", new Date());
 </script>
 <script>
-    window.onload=function(){
-  console.log(window);
-  document.getElementById('EXCEL').addEventListener('click',()=>{ 
-    var table2excel = new Table2Excel();
-   
-    table2excel.export(document.querySelectorAll("#myTable"));
-  })
-}
+    window.onload = function () {
+        console.log('excellllllllllllllllllll')
+        console.log(window);
+        document.getElementById('EXCEL').addEventListener('click', () => {
+            var table2excel = new Table2Excel();
+            table2excel.export(document.querySelectorAll("#myTable"));
+        })
+        document.getElementById('PDF').addEventListener('click', () => {
+            const pdf = this.document.getElementById('myTable')
+            console.log(pdf);
+            console.log(window);
+            let opt = {
+                margin: 0,
+                filename: 'Report.pdf',
+                image: { type: 'jpg', quality: 0.98 },
+                html2canvas: { scale: 4 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+            };
+
+            html2pdf().from(pdf).set(opt).save();
+        })
+    }
 </script>
 </body>
 

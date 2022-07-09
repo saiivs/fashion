@@ -132,7 +132,7 @@ function drawBarChart(Cod,razor,paypal) {
   }
 }
 
-function drawPieChart(Cod,razor,paypal) {
+function drawPieChart(Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec) {
   if ($("#pieChart").length) {
     var chartHeight = 300;
 
@@ -161,16 +161,25 @@ function drawPieChart(Cod,razor,paypal) {
       data: {
         datasets: [
           {
-            data: [Cod,razor,paypal],
-            backgroundColor: ["#F7604D", "#4ED6B8", "#A8D582"],
+            data: [Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec],
+            backgroundColor: ["#F7604D", "#4ED6B8", "#A8D582","#00FA9A","#FF1493","#008000","#7CFC00","#DC143C","#0000FF","#8B008B","#FFFF00","#800080"],
             label: "Storage"
           }
         ],
         labels: [
-          "COD-"+Cod,
-          "RAZOR-"+razor,
-          "PAYPAL-"+paypal
-        ]
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "NOV",
+          "Dec",
+        ],
       },
       options: optionsPie
     };

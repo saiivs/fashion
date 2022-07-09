@@ -163,7 +163,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">BANNER</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
                   <span aria-hidden="true">&times;</span>
                 </div>
@@ -171,22 +171,25 @@
                   <form action="/admin/banner_data" method="post" enctype="multipart/form-data">
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Header:</label>
-                      <input type="text" name="header" class="form-control" id="recipient-name">
+                      <input type="text" name="header" onkeyup="validHeader()" class="form-control" id="f1">
+                      <span class="text-danger" id="ERR_1" style="font-size: smaller;" ></span>
                     </div>
                     <div class="mb-3">
                       <label for="message-text" class="col-form-label">Main Head:</label>
-                      <textarea name="main" class="form-control" id="message-text"></textarea>
+                      <textarea name="main" onkeyup="validMain()" class="form-control" id="f2"></textarea>
+                      <span class="text-danger" id="ERR_2" style="font-size: smaller;"></span>
                     </div>
                     <div class="mb-3">
                       <label for="image" class="text-white">Image</label>
-                      <input type="file" name="image">
+                      <input type="file" name="image"  required>
                     </div>
+                     <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" onclick="return validate()"  class="btn btn-primary">Submit</button>
+                </div>
                   </form>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Send message</button>
-                </div>
+               
               </div>
             </div>
           </div>
@@ -252,21 +255,26 @@
                   <form action="/admin/Coupon" method="post" >
                     <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Coupon Name:</label>
-                      <input type="text" name="Coupon_Name" class="form-control" id="recipient">
+                      <input type="text" name="Coupon_Name" onkeyup="validCouponName()" class="form-control" id="B1">
+                      <span id="NO_1" class="text-danger" style="font-size: smaller;"></span>
                     </div>
                    <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Offer:</label>
-                      <input type="text" name="Coupon_Value" class="form-control" id="recipient-name">
+                      <input type="text" name="Coupon_Value" onkeyup="validCouponValue()" class="form-control" id="B2">
+                      <span id="NO_2" class="text-danger" style="font-size: smaller;"></span>
                     </div>
                    <div class="mb-3">
                       <label for="recipient-name" class="col-form-label">Validity:</label>
-                      <input type="date" name="Coupon_Date" class="form-control" id="recipient-name">
+                      <input type="date" name="Coupon_Date" onkeyup="validValidity()" class="form-control" id="B3">
+                      <span id="NO_3" class="text-danger" style="font-size: smaller;"></span>
                     </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">ADD</button>
+                  <button type="submit" onclick="return validation()" class="btn btn-primary">ADD</button>
                 </div>
+                
               </div>
             </div>
           </div>
@@ -344,7 +352,82 @@
       });
     });
   </script>
-
+  <script>
+    
+    function validHeader(){
+    let value=document.getElementById('f1').value
+    let ERROR=document.getElementById('ERR_1')
+      if(value==""){
+        ERROR.innerHTML="PLEASE FILL THE FIELD"
+        return false;
+      }
+      if(!value.match(/^[a-zA-Z-" "]*$/)){
+        ERROR.innerHTML="ONLY ALPHABETS ARE ALLOWED"
+        return false;
+      }
+      ERROR.innerHTML=""
+      return true;
+    }
+    function validMain(){
+    let value=document.getElementById('f2').value
+    let ERROR=document.getElementById('ERR_2')
+      if(value==""){
+      ERROR.innerHTML="PLEASE FILL THE FIELD"
+      return false;
+      }
+      if(!value.match(/^[a-zA-Z-" "]*$/)){
+      ERROR.innerHTML="ONLY ALPHABETS ARE ALLOWED"
+      return false;
+      }
+      ERROR.innerHTML=""
+      return true;
+    }
+    function validCouponName(){
+    let value=document.getElementById('B1').value
+    let ERROR=document.getElementById('NO_1')
+    if(value==""){
+    ERROR.innerHTML="PLEASE FILL THE FIELD"
+    return false;
+    }
+    ERROR.innerHTML=""
+    return true;
+    }
+    function validCouponValue(){
+    let value=document.getElementById('B2').value
+    let ERROR=document.getElementById('NO_2')
+    if(value==""){
+    ERROR.innerHTML="PLEASE FILL THE FIELD"
+    return false;
+    }
+    if(!value.match(/^[0-9]/)){
+    ERROR.innerHTML="ONLY NUMBERS ARE ALLOWED"
+    return false;
+    }
+    ERROR.innerHTML=""
+    return true;
+    }
+    function validValidity(){
+    let value=document.getElementById('B1').value
+    let ERROR=document.getElementById('NO_1')
+    if(value==""){
+    ERROR.innerHTML="PLEASE FILL THE FIELD"
+    return false;
+    }
+    ERROR.innerHTML=""
+    return true;
+    }
+    function validate(){
+      if(!validHeader()||!validMain()){
+        return false
+      }
+      return true;
+    }
+    function validation(){
+      if(!validCouponName()||!validCouponValue()||!validValidity()){
+        return false;
+      }
+      return true;
+    }
+  </script>
 </body>
-
 </html>

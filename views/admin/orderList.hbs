@@ -144,8 +144,8 @@
 
 
 
-    <section class="container pt-4">
-        <table id="myTable" class="table text-dark ">
+    <section class="container pt-4 table-responsive ">
+        <table id="myTable" class="table text-dark  ">
             <thead>
                 <tr>
                     <th scope="col">Sl No</th>
@@ -189,11 +189,7 @@
                     <td><a class="btn bg-success px-2 py-1 rounded text-white" 
                             >DELIEVERED</a></td>
                     {{else}}
-                        {{#ifCound this.status "SHIPPED"}}
-                        <td><a class="btn bg-success px-3 py-1 rounded text-white" 
-                            >SHIPPED</a></td>
-
-                        {{else}}
+                        
                             <td> <select onchange="status(this.value,'{{this._id}}','{{this.user}}')" class="custom-select tm-select-accounts"
                             id="category" name="offer">
                             <option selected>{{this.status}}</option>
@@ -202,24 +198,11 @@
                             <option value="DELIVERED">DELIVERED</option>
                             {{!-- <option value="2">Most Popular</option>
                             <option value="3">Trending</option> --}}
-
                         </select>
                     </td>
-                    {{/ifCound}}
-                    {{/ifCound}}
-                    {{/ifCound}}
                     
-                    {{!-- <td><a class="btn btn-outline-warning rounded" id="{{this._id}}"
-                            onclick="cancel('{{this._id}}')">Cancel</a></td> --}}
-                    {{!-- {{else}}
-                    <td><a class="btn btn-outline-danger rounded">Order Return</a></td>
-                    {{/if}} --}}
-
-
-                    {{!-- <td><a class="btn btn-danger"
-                            onclick=" return confirm('are you sure to delete {{this.name}}')"
-                            href="/admin/delete-user/{{this._id}}">Delete</a></td> --}}
-
+                    {{/ifCound}}
+                    {{/ifCound}}
                 </tr>
                 {{/each}}
 

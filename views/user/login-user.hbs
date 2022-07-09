@@ -2,32 +2,32 @@
   <div class="container-fluid h-custom">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-md-9 col-lg-6 col-xl-5">
-        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-          class="img-fluid" alt="Sample image">
+        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+          alt="Sample image">
       </div>
-     
+
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
         <form action="/login-user" method="post">
-         {{#if eror}}
-             <p class="text-danger">{{eror}}</p>
+          {{#if eror}}
+          <p class="text-danger">{{eror}}</p>
           {{/if}}
           <!-- Email input -->
           <div class="form-outline mb-4">
-            
-             <label class="form-label" for="">Email address</label>
+
+            <label class="form-label" for="">Email address</label>
             <input type="email" name="email" id="Email-ER" onkeyup="valid()" class="form-control form-control-lg"
-             placeholder="Enter email"/>
-             <span class="text-danger" id="ERR_1"></span>
-           
+              placeholder="Enter email" />
+            <span class="text-danger" id="ERR_1"></span>
+
           </div>
-          
+
 
           <!-- Password input -->
           <div class="form-outline mb-3">
-            
-            <label class="form-label" >Password</label>
-            <input type="password" name="password" id="Pass-ER" onkeyup="validPass()" class="form-control form-control-lg"
-              placeholder="Enter password" />
+
+            <label class="form-label">Password</label>
+            <input type="password" name="password" id="Pass-ER" onkeyup="validPass()"
+              class="form-control form-control-lg" placeholder="Enter password" />
             <span class="text-danger" id="ERR_2"></span>
           </div>
 
@@ -81,44 +81,44 @@
 </section>
 
 <script>
-function valid(){
-const value=document.getElementById('Email-ER').value
-const messg=document.getElementById('ERR_1')
-if(value==""){
-  messg.innerHTML="Please Fill The Fields"
-  return false;
-}
-if(!value.match(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/)){
-  messg.innerHTML="Please enter valid email"
-  return false;
-}
-messg.innerHTML=""
-return true;
-}
-
-function validPass(){
-const value=document.getElementById('Pass-ER').value
-const messg=document.getElementById('ERR_2')
-if(value==""){
-  messg.innerHTML="Please Fill The Fields"
-  return false;
-}
-if(value.length < 3){
-  messg.innerHTML="characters must be above 2"
-  return false;
-}
-messg.innerHTML=""
-return true;
-}
-
-function validation(){
-  if(!valid()||!validPass()){
-   
-     return false;
+  function valid() {
+    const value = document.getElementById('Email-ER').value
+    const messg = document.getElementById('ERR_1')
+    if (value == "") {
+      messg.innerHTML = "Please Fill The Fields"
+      return false;
+    }
+    if (!value.match(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/)) {
+      messg.innerHTML = "Please enter valid email"
+      return false;
+    }
+    messg.innerHTML = ""
+    return true;
   }
-  return true;
- 
-}
+
+  function validPass() {
+    const value = document.getElementById('Pass-ER').value
+    const messg = document.getElementById('ERR_2')
+    if (value == "") {
+      messg.innerHTML = "Please Fill The Fields"
+      return false;
+    }
+    if (value.length < 3) {
+      messg.innerHTML = "characters must be above 2"
+      return false;
+    }
+    messg.innerHTML = ""
+    return true;
+  }
+
+  function validation() {
+    if (!valid() || !validPass()) {
+
+      return false;
+    }
+    return true;
+
+  }
 
 
 </script>
