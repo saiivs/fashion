@@ -87,6 +87,8 @@ router.post('/Panel', (req, res) => {
 router.get('/user-list', verify, (req, res) => {
   helper.getData().then((data) => {
     res.render('admin/user-list', { admin: true, head: true, index: true, data })
+  }).catch(()=>{
+    res.render('user/error')
   })
 })
 
@@ -96,6 +98,8 @@ router.get('/block/:id', verify, (req, res) => {
   helper.blockuser(bid).then((data) => {
     res.json({ status: true })
 
+  }).catch(()=>{
+    res.render('user/error')
   })
 })
 
@@ -103,6 +107,8 @@ router.get('/unblock/:id', verify, (req, res) => {
   let dib = req.params.id
   helper.unblockuser(dib).then((data) => {
     res.json({ status: true })
+  }).catch(()=>{
+    res.render('user/error')
   })
 })
 
@@ -111,18 +117,21 @@ router.get('/products', verify, (req, res) => {
     helper.getCatog().then((catog) => {
       res.render('admin/products', { products, catog })
     })
+  }).catch(()=>{
+    res('user/error')
   })
 })
 
 router.get('/add-products', verify, (req, res) => {
   helper.getCatog().then((catog) => {
     res.render('admin/add-product', { catog })
+  }).catch(()=>{
+    res.render('user/error')
   })
 
 })
 
 router.post('/add-products', (req, res) => {
-  console.log(req.files.image);
   helper.addProducts(req.body).then((id) => {
     let image = req.files.image;
     image.mv('./public/pro-img/' + id + '.jpg', (err, data) => {
@@ -133,6 +142,8 @@ router.post('/add-products', (req, res) => {
         console.log(err);
       }
     })
+  }).catch(()=>{
+    res.render('user/error')
   })
 })
 
@@ -141,6 +152,8 @@ router.get('/del-pro/:id', verify, (req, res) => {
   let delpro = req.params.id;
   helper.delProducts(delpro).then((result) => {
     res.json(result)
+  }).catch(()=>{
+    res.render('user/error')
   })
 })
 
@@ -150,10 +163,8 @@ router.get('/edit-pro/:id', verify, (req, res) => {
     helper.getCatog().then((catog) => {
       res.render('admin/edit-products', { result, catog })
     })
-
-
-
-
+  }).catch(()=>{
+    res.render('user/error')
   })
 })
 
@@ -161,13 +172,14 @@ router.get('/edit-img', verify, (req, res) => {
   helper.getedit(editpro).then((result) => {
 
     res.render('admin/edit-products', { result })
+  }).catch(()=>{
+    res.render('user/error')
   })
 })
 
 router.post('/edit-pro/:id', (req, res) => {
   let editid = req.params.id;
   helper.editProducts(editid, req.body).then((data) => {
-
     if (req.files != null) {
       let image = req.files.image;
       image.mv('./public/pro-img/' + editid + '.jpg')
@@ -176,6 +188,8 @@ router.post('/edit-pro/:id', (req, res) => {
     else {
       res.redirect('/admin/products')
     }
+  }).catch(()=>{
+    res.render('user/error')
   })
 
 })
@@ -197,10 +211,10 @@ router.post('/Add-Catog', (req, res) => {
           res.redirect('/admin/products')
         })
       })
-
     }
+  }).catch(()=>{
+    res.render('user/error')
   })
-
 })
 
 router.get('/delcat/:id/:name', (req, res) => {
@@ -218,12 +232,8 @@ router.get('/delcat/:id/:name', (req, res) => {
           res.redirect('/admin/products')
         })
       })
-
-
     }
-
   })
-
 })
 
 router.get('/editcat/:id', verify, (req, res) => {
@@ -242,20 +252,13 @@ router.post('/editcat/:id', (req, res) => {
 
 router.get('/orderList', verify, (req, res) => {
   helper.getOrderAdmin().then(async (order) => {
-
     if (req.session.cancel) {
       res.render('admin/orderList', { order, cancel: req.session.cancel })
     }
     else {
       res.render('admin/orderList', { order })
-
     }
-    // let name=await helper.getUser(order.user)
-    // console.log(name);
-
-
   })
-
 })
 
 router.post('/updateStatus', async (req, res) => {
@@ -291,7 +294,8 @@ router.get('/Banner', verify, (req, res) => {
 
   helper.getBanner().then(async (banner) => {
     let Coupons = await helper.getCoupon()
-    res.render('admin/banners2', { banner, Coupons })
+    let Banner=req.session.BannerData
+    res.render('admin/banners2', { banner, Coupons, Banner })
 
   })
 })
@@ -313,6 +317,8 @@ router.post('/banner_data', (req, res) => {
     })
   })
 })
+
+
 
 
 
@@ -392,10 +398,15 @@ router.post('/takeReport', (req, res) => {
     req.session.report = report;
     res.redirect('/admin/Report')
   })
+})
 
-
-
-
+router.post('/DeleteCoupon',(req,res)=>{
+  console.log(req.body);
+  helper.DeleteCoupon(req.body.ID).then((del)=>{
+      res.json({status:true})
+  }).catch(()=>{
+    res.render('user/error')
+  })
 })
 
 

@@ -107,14 +107,14 @@
                                 BANNERS & COUPONS
                             </a>
                         </li>
-                        
+
 
                         <li class="nav-item dropdown active">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-gift" aria-hidden="true"></i>
                                 <span>
-                                    OFFERS 
+                                    OFFERS
                                 </span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -134,16 +134,16 @@
             </div>
     </div>
 
-    <section class="container pt-4">
+    <section class="container pt-4 table-responsive ">
         <table id="myTable" class="table text-dark ">
             <thead>
                 <tr>
                     <th scope="col">SL.NO</th>
-                  <th scope="col">OFFER NAME</th>
-                  <th scope="col">PERCENTAGE</th>
-                  <th scope="col">VALIDITY</th>
-                  <th scope="col">ACTION</th>
-                  
+                    <th scope="col">OFFER NAME</th>
+                    <th scope="col">PERCENTAGE</th>
+                    <th scope="col">VALIDITY</th>
+                    <th scope="col">ACTION</th>
+
                     {{!-- <th scope="col">Edit</th>
                     <th scope="col">Delete</th> --}}
                 </tr>
@@ -151,79 +151,90 @@
             <tbody>
                 {{#each offer}}
                 <tr>
-                  {{!-- <th scope="row"><input type="checkbox" /></th> --}}
-                  <td>{{inc @index}}</td>
-                  <td class="tm-product-name">{{this.offername}}</td>
-                  <td class="tm-product-name">{{this.percentage}}</td>
-                  <td class="tm-product-name">{{this.validity}}</td>
+                    {{!-- <th scope="row"><input type="checkbox" /></th> --}}
+                    <td>{{inc @index}}</td>
+                    <td class="tm-product-name">{{this.offername}}</td>
+                    <td class="tm-product-name">{{this.percentage}}</td>
+                    <td class="tm-product-name">{{this.validity}}</td>
 
 
-                  {{!-- <td><img class="rounded" style="width: 50px;height: 50px" src="/banner_img/{{banner._id}}.jpg"
-                      alt="">
-                  </td> --}}
-                  <td><a class="btn btn-warning btn-sm px-2 py-2 rounded" href="/admin/offerDel/{{this._id}}">DELETE</a>
-                  
-                  </td>
+                    {{!-- <td><img class="rounded" style="width: 50px;height: 50px" src="/banner_img/{{banner._id}}.jpg"
+                            alt="">
+                    </td> --}}
+                    <td><a class="btn btn-warning btn-sm px-2 py-2 rounded"
+                            href="/admin/offerDel/{{this._id}}">DELETE</a>
 
-                  {{!-- <td>
-                    <a onclick="return confirm('are you sure to delete'+ {{this.name}})"
-                      href="/admin/del-pro/{{this._id}}" class="tm-product-delete-link">
-                      <i class="far fa-trash-alt tm-product-delete-icon"></i>
-                    </a>
-                  </td> --}}
+                    </td>
+
+                    {{!-- <td>
+                        <a onclick="return confirm('are you sure to delete'+ {{this.name}})"
+                            href="/admin/del-pro/{{this._id}}" class="tm-product-delete-link">
+                            <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                        </a>
+                    </td> --}}
                 </tr>
                 {{/each}}
 
             </tbody>
         </table>
     </section>
-    <button type="button" class="btn btn-primary text-uppercase mb-3" style="margin-left: 210px;" data-toggle="modal"
-            data-target="#staticBackdrop">
-            ADD OFFERS 
-          </button>
-
-          <!-- Modal -->
-          <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-                  <span aria-hidden="true">&times;</span>
-                </div>
-                <form action="/admin/offer" method="post">
-                  <div class="modal-body">
-
-                    
-                    <label class="form-label" for="form3Example1cg">OFFER NAME</label>
-                    <input type="text" name="offername" id="ERRR-1" onkeyup="validOfferName()"
-                      class="form-control form-control-lg" />
-                      <span class="text-danger" style="font-size: smaller;" id="er-1"></span>
-                  </div>
-                  <div class="modal-body">
-
-                    
-                    <label class="form-label" for="form3Example1cg">PERCENTAGE</label>
-                    <input type="number" name="percentage" id="ERRR-2" onkeyup="validPer()"
-                      class="form-control form-control-lg" />
-                      <span class="text-danger" style="font-size: smaller;" id="er-2"></span>
-                  </div>
-                  <div class="modal-body">
-                    
-                    <label class="form-label" for="form3Example1cg">VALIDITY</label>
-                    <input type="date" name="validity" id="ERRR-3" onkeyup="validValidity()"
-                      class="form-control form-control-lg" />
-                      <span class="text-danger" style="font-size: smaller;" id="er-3"></span>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" onclick="return Validation()" class="btn btn-primary">ADD OFFER</button>
-                  </div>
-                </form>
-              </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <button type="button" class="btn btn-primary text-uppercase rounded" 
+                    data-toggle="modal" data-target="#staticBackdrop">
+                    ADD OFFERS
+                </button>
             </div>
-          </div>
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">ADD OFFER</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                                <span aria-hidden="true">&times;</span>
+                            </div>
+                            <form action="/admin/offer" method="post">
+                                <div class="modal-body">
+
+
+                                    <label class="form-label" for="form3Example1cg">OFFER NAME</label>
+                                    <input type="text" name="offername" id="ERRR-1" onkeyup="validOfferName()"
+                                        class="form-control form-control-lg" />
+                                    <span class="text-danger" style="font-size: smaller;" id="er-1"></span>
+                                </div>
+                                <div class="modal-body">
+
+
+                                    <label class="form-label" for="form3Example1cg">PERCENTAGE</label>
+                                    <input type="number" name="percentage" id="ERRR-2" onkeyup="validPer()"
+                                        class="form-control form-control-lg" />
+                                    <span class="text-danger" style="font-size: smaller;" id="er-2"></span>
+                                </div>
+                                <div class="modal-body">
+
+                                    <label class="form-label" for="form3Example1cg">VALIDITY</label>
+                                    <input type="date" name="validity" id="ERRR-3" onkeyup="validValidity()"
+                                        class="form-control form-control-lg" />
+                                    <span class="text-danger" style="font-size: smaller;" id="er-3"></span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" onclick="return Validation()" class="btn btn-primary">ADD
+                                        OFFER</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            
+
+        </div>
+    </div>
+
+
 
 
     <script src="/product-admin-master/js/jquery-3.3.1.min.js"></script>
@@ -296,50 +307,50 @@
     });
 </script>
 <script>
-    function validOfferName(){
-        let value=document.getElementById('ERRR-1').value
-        let ERROR=document.getElementById('er-1')
-        if(value==""){
-            ERROR.innerHTML="FILL THE FIELDS"
+    function validOfferName() {
+        let value = document.getElementById('ERRR-1').value
+        let ERROR = document.getElementById('er-1')
+        if (value == "") {
+            ERROR.innerHTML = "FILL THE FIELDS"
             return false;
         }
-        if(!value.match(/^[a-zA-Z-" "]*$/)){
-            ERROR.innerHTML="ONLY ALPHABETS ARE ALLOWED"
+        if (!value.match(/^[a-zA-Z-" "]*$/)) {
+            ERROR.innerHTML = "ONLY ALPHABETS ARE ALLOWED"
             return false;
         }
-        ERROR.innerHTML=""
+        ERROR.innerHTML = ""
         return true;
     }
-    function validPer(){
-        let value=document.getElementById("ERRR-2").value
-        let ERROR=document.getElementById('er-2')
-        if(value==""){
-            ERROR.innerHTML="FILL THE FIELDS"
+    function validPer() {
+        let value = document.getElementById("ERRR-2").value
+        let ERROR = document.getElementById('er-2')
+        if (value == "") {
+            ERROR.innerHTML = "FILL THE FIELDS"
             return false;
         }
-        if(!value.match(/^[0-9]/)){
-            ERROR.innerHTML="ONLY NUMBERS ARE ALLOWED"
+        if (!value.match(/^[0-9]/)) {
+            ERROR.innerHTML = "ONLY NUMBERS ARE ALLOWED"
             return false;
         }
-        ERROR.innerHTML=""
+        ERROR.innerHTML = ""
         return true;
     }
-    function validValidity(){
-        let value=document.getElementById('ERR-3').value
-        let ERROR=document.getElementById('er-3')
-        if(value==""){
-            ERROR.innerHTML="FILL THE FIELDS"
+    function validValidity() {
+        let value = document.getElementById('ERR-3').value
+        let ERROR = document.getElementById('er-3')
+        if (value == "") {
+            ERROR.innerHTML = "FILL THE FIELDS"
             return false;
         }
-        if(!value.match(/^[0-9]/)){
-            ERROR.innerHTML="ONLY NUMBERS ARE ALLOWED"
+        if (!value.match(/^[0-9]/)) {
+            ERROR.innerHTML = "ONLY NUMBERS ARE ALLOWED"
             return false;
         }
-        ERROR.innerHTML=""
+        ERROR.innerHTML = ""
         return true;
     }
-    function Validation(){
-        if(!validOfferName()||!validPer()||!validValidity()){
+    function Validation() {
+        if (!validOfferName() || !validPer() || !validValidity()) {
             return false;
         }
         return true;

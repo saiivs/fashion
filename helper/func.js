@@ -33,7 +33,12 @@ module.exports = {
     getData: () => {
         return new Promise((res, rej) => {
             let user = db.get().collection('userdata').find().toArray()
-            res(user)
+            if(user){
+                res(user)
+            }else{
+                rej()
+            }
+            
         })
     },
     doLogin: (doc) => {
@@ -71,6 +76,8 @@ module.exports = {
             db.get().collection("userdata").updateOne({ _id: objectId(id) }, { $set: { status: true, status: false } }).then((data) => {
                 console.log(data);
                 res(data)
+            }).catch(()=>{
+                rej()
             })
         })
     },
@@ -78,6 +85,8 @@ module.exports = {
         return new Promise((res, rej) => {
             db.get().collection("userdata").updateOne({ _id: objectId(id) }, { $set: { status: false, status: true } }).then((data) => {
                 res(data)
+            }).catch(()=>{
+                rej()
             })
         })
     },
@@ -96,13 +105,19 @@ module.exports = {
 
                 console.log(data);
                 res(data.insertedId)
+            }).catch(()=>{
+                rej()
             })
         })
     },
     getProducts: () => {
-        return new Promise(async (res, rej) => {
-            let pro = await db.get().collection('prodata').find().toArray()
-            res(pro)
+        return new Promise((res, rej) => {
+              db.get().collection('prodata').find().toArray().then((pro)=>{
+                res(pro)
+            }).catch(()=>{
+                rej()
+            })
+            
 
         })
     },
@@ -111,6 +126,8 @@ module.exports = {
         return new Promise((res, rej) => {
             db.get().collection('prodata').deleteOne({ _id: objectId(id) }).then((result) => {
                 res(result)
+            }).catch(()=>{
+                rej()
             })
         })
     },
@@ -119,6 +136,8 @@ module.exports = {
         return new Promise((res, rej) => {
             db.get().collection("prodata").updateOne({ _id: objectId(id) }, { $set: { name: detname.name, quantity: detname.quantity, cat: detname.cat, price: detname.price } }).then((result) => {
                 res(result)
+            }).catch(()=>{
+                rej()
             })
         })
     },
@@ -127,9 +146,9 @@ module.exports = {
         return new Promise((res, rej) => {
             db.get().collection('prodata').findOne({ _id: objectId(id) }).then((data) => {
                 res(data)
+            }).catch(()=>{
+                rej()
             })
-        }).catch(() => {
-            res()
         })
     },
     checkUser: (doc) => {
@@ -184,13 +203,14 @@ module.exports = {
     },
     checkCatEx: (name) => {
         return new Promise((res, rej) => {
-            let got = db.get().collection(collections.PRODATA).find({ cat: name }).toArray()
-            if (got == null) {
-                res({ status: true })
-            }
-            else {
-                res({ status: false })
-            }
+            db.get().collection(collections.PRODATA).find({ cat: name }).toArray().then((got)=>{
+                if (got == null) {
+                    res({ status: true })
+                }
+                else {
+                    res({ status: false })
+                }
+            })  
         })
     },
     catStatus: (name) => {
@@ -232,6 +252,8 @@ module.exports = {
                     response.got = false;
                     res(response)
                 }
+            }).catch(()=>{
+                rej()
             })
 
         })
@@ -945,7 +967,7 @@ module.exports = {
             let banner = await db.get().collection(collections.BANNERS).findOne()
             if (!banner) {
                 console.log("false conditionnnnnnnnnnn");
-                let created = await db.get().createCollection(collections.BANNERS, { "capped": true, "size": 2000, "max": 1 })
+                let created = await db.get().createCollection(collections.BANNERS, { "capped": true, "size": 60000, "max": 1 })
             }
 
             db.get().collection(collections.BANNERS).insertOne(body).then((banner) => {
@@ -965,6 +987,9 @@ module.exports = {
             })
         })
     },
+
+    
+   
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>offers>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
@@ -1199,6 +1224,20 @@ module.exports = {
                 res(false)
             }
 
+        })
+    },
+
+    DeleteCoupon:(id)=>{
+        return new Promise((res,rej)=>{
+            db.get().collection(collections.COUPON).deleteOne({_id:objectId(id)}).then((del)=>{
+                if(del){
+                    res(del)
+                }
+                else{
+                    rej()
+                }
+               
+            })
         })
     },
 

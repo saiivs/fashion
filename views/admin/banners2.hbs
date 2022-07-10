@@ -121,7 +121,7 @@
                   <th scope="col">BANNER HEAD</th>
                   <th scope="col">BANNER MAIN</th>
                   <th scope="col">IMAGE</th>
-                  <th scope="col">ACTION</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -135,8 +135,7 @@
 
                   <td><img class="rounded" style="width: 50px;height: 50px" src="/banner_img/{{banner._id}}.jpg" alt="">
                   </td>
-                  <td><a class="btn btn-warning btn-sm px-2 py-2 rounded" href="/admin/EditBan/{{this._id}}">Edit</a>
-                  </td>
+                  
 
                   {{!-- <td>
                     <a onclick="return confirm('are you sure to delete'+ {{this.name}})"
@@ -223,12 +222,11 @@
                   <td class="tm-product-name font-weight-light">{{this.Coupon_Name}}</td>
                   <td class="tm-product-name font-weight-light">{{this.Coupon_Value}}%</td>
                   <td class="tm-product-name font-weight-light">{{this.Coupon_Date}}</td>
-                  
-
-
-                  <td><a class="btn btn-warning btn-sm px-2 py-2 rounded" href="/admin/edit-pro/{{this._id}}">Edit</a>
+                  <td>
+                    <a onclick="deleteCoupon('{{this._id}}')" class="tm-product-delete-link">
+                      <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                    </a>
                   </td>
-
 
                 </tr>
                 {{/each}}
@@ -268,12 +266,13 @@
                       <input type="date" name="Coupon_Date" onkeyup="validValidity()" class="form-control" id="B3">
                       <span id="NO_3" class="text-danger" style="font-size: smaller;"></span>
                     </div>
-                    </form>
+                    
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" onclick="return validation()" class="btn btn-primary">ADD</button>
                 </div>
+                </form>
                 
               </div>
             </div>
@@ -311,6 +310,8 @@
   <!-- https://getbootstrap.com/ -->
   <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="/product-admin-master/js/admin.js"></script>
 
   <script>
     $(document).ready(function () {

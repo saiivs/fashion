@@ -134,7 +134,7 @@
             </div>
     </div>
 
-    <section class="container pt-4">
+    <section class="container pt-4 table-responsive ">
 
         <table id="myTable" class="table text-dark ">
             <thead>
@@ -162,17 +162,19 @@
                     <td><img class="rounded" style="width: 50px;height: 50px" src="/pro-img/{{this._id}}.jpg" alt="">
                     </td>
                     {{#if this.offername}}
-                    <td class="tm-product-name"><button style="font-size:small ;" onclick="Rmv('{{this._id}}')" type="button" class="btn btn-danger rounded px-3 py-2"
-                            >
-                            REMOVE 
-                        </button>&nbsp;<span class="text-danger">{{#if this.offername}}{{this.offername}}%&nbsp;Applied{{/if}}</span></td>
+                    <td class="tm-product-name"><button style="font-size:small ;" onclick="Rmv('{{this._id}}')"
+                            type="button" class="btn btn-danger rounded px-3 py-2">
+                            REMOVE
+                        </button>&nbsp;<span class="text-danger">{{#if
+                            this.offername}}{{this.offername}}%&nbsp;Applied{{/if}}</span></td>
                     {{else}}
                     <td class="tm-product-name"><button type="button" class="btn btn-primary rounded px-3 py-2"
                             data-toggle="modal" data-target="#b{{this._id}}">
-                            OFFERS 
-                        </button>&nbsp;<span class="text-danger">{{#if this.offername}}{{this.offername}}%&nbsp;Applied{{/if}}</span></td>
+                            OFFERS
+                        </button>&nbsp;<span class="text-danger">{{#if
+                            this.offername}}{{this.offername}}%&nbsp;Applied{{/if}}</span></td>
                     {{/if}}
-                    
+
                     {{!-- <td><a class="btn btn-warning btn-sm px-2 py-2 rounded"
                             href="/admin/edit-pro/{{this._id}}">Edit</a>
                     </td> --}}
@@ -200,28 +202,22 @@
                         </button>
                     </div>
                     <form action="/admin/updateOffer/{{this._id}}" method="post">
-                    <div class="modal-body">
-                        
-                        <label
-                      for="category"
-                      >OFFERS</label
-                    >
-                    <select
-                      class="custom-select tm-select-accounts"
-                      id="category" name="offer"
-                    >
-                      <option selected>Select Offers</option>
-                      {{#each ../offer}}
-                      <option value="{{this.offername}}">{{this.offername}}</option>
-                      {{!-- <option value="2">Most Popular</option>
-                      <option value="3">Trending</option> --}}
-                      {{/each}}
-                    </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">ADD</button>
-                    </div>
+                        <div class="modal-body">
+
+                            <label for="category">OFFERS</label>
+                            <select class="custom-select tm-select-accounts" id="category" name="offer">
+                                <option selected>Select Offers</option>
+                                {{#each ../offer}}
+                                <option value="{{this.offername}}">{{this.offername}}</option>
+                                {{!-- <option value="2">Most Popular</option>
+                                <option value="3">Trending</option> --}}
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">ADD</button>
+                        </div>
                     </form>
                 </div>
             </div>
