@@ -1,0 +1,255 @@
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>ADDRESS</h4>
+                    <div class="breadcrumb__links">
+                        <a href="./index.html">Home</a>
+                        <a href="./shop.html">Profile</a>
+                        <span>Address</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 rounded shadow-lg" style="background-color: #f3f2ee;">
+                <div class="shopping__cart__table p-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>SL.NO</th>
+                                <th class="px-5">ADDRESS</th>
+                                <th>ACTION</th>
+
+                            </tr>
+                        </thead>
+                        {{#each data}}
+
+                        <tbody>
+
+
+                            <tr>
+                                <td>
+                                    {{inc @index}}.
+
+                                </td>
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__text px-5">
+                                        <h6>{{this.name}}<br>{{this.country}},{{this.STaddress}}<br>{{this.APaddress}},{{this.Town_city}}<br>{{this.email}},{{this.phone}}
+                                        </h6>
+
+                                    </div>
+                                </td>
+
+                                <td><a class="btn btn-dark text-white" data-toggle="modal" data-target="#D{{this._id}}">
+                                        Edit
+                                    </a>
+
+
+                                </td>
+
+
+
+
+                                {{!--
+                                <td id="{{this.product.name}}" class="cart__price">{{this.total}}</td>
+                                <td onclick="removePro('{{this._id}}','{{this.items}}')" class="cart__close"><i
+                                        class="fa fa-close"></i></td> --}}
+
+                            </tr>
+
+
+                        </tbody>
+                        {{/each}}
+                    </table>
+                    {{#each data}}
+                    <div class="modal fade" id="D{{this._id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">EDIT</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form id="addressPRO" >
+                                <div class="modal-body">
+                                    <div class="col-lg-12 col-md-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="checkout__input">
+                                                    <p>Name<span>*</span><span class="text-danger" id="ERR_1"></span>
+                                                    </p>
+                                                    <input type="text" id="f1" class="text-dark" name="name"
+                                                        value="{{this.name}}" onkeyup="validName()">
+                                                    <input type="text"  class="text-dark" name="AID"
+                                                        value="{{this._id}}" hidden>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="checkout__input">
+                                            <p>Country<span>*</span><span class="text-danger" id="ERR_3"></span></p>
+                                            <input type="text" id="f3" name="country" value="{{this.country}}"
+                                                class="text-dark" onkeyup="validCountry()">
+
+                                        </div>
+                                        <div class="checkout__input">
+                                            <p>Address<span>*</span><span class="text-danger" id="ERR_4"></span></p>
+                                            <input type="text" placeholder="Street Address" value="{{this.STaddress}}"
+                                                class="text-dark" id="f4" onkeyup="validStreet()" name="STaddress"
+                                                class="checkout__input__add">
+                                            <span class="text-danger" id="ERR_5"></span>
+                                            <input type="text" name="APaddress" value="{{this.APaddress}}"
+                                                class="text-dark" id="f5" onkeyup="validAP()"
+                                                placeholder="Apartment, suite, unite ect (optinal)">
+
+                                        </div>
+                                        <div class="checkout__input">
+                                            <p>Town/City<span>*</span><span class="text-danger" id="ERR_6"></span></p>
+                                            <input type="text" id="f6" class="text-dark" onkeyup="validCity()"
+                                                name="Town_city" value="{{this.Town_city}}">
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="checkout__input">
+                                                    <p>Phone<span>*</span><span class="text-danger" id="ERR_9"></span>
+                                                    </p>
+                                                    <input type="number" class="text-dark" id="f9"
+                                                        onkeyup="validPhone()" name="phone" value="{{this.phone}}">
+
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="checkout__input">
+                                                    <p>Email<span>*</span><span class="text-danger" id="ERR_10"></span>
+                                                    </p>
+                                                    <input type="text" id="f10" onkeyup="validEmail()" name="email"
+                                                        value="{{this.email}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button  type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function validName(){
+        let value=document.getElementById('f1').value
+        let ERR=document.getElementById('ERR_1')
+        if(value=="")
+        ERR.innerHTML="PLEASE FILL THE FIELDS"
+        return false;
+        if(!value.match(/^[a-zA-Z]*$/)){
+            ERR.innerHTML="ONLY ALPHABETS ARE ALLOWED"
+            return false;
+        }
+        ERR.innerHTML=""
+        return true;
+    }
+    function validCountry(){
+        let value=document.getElementById('f3').value
+        let ERR=document.getElementById('ERR_3')
+        if(value==""){
+        ERR.innerHTML="PLEASE FILL THE FIELDS"
+        return false;
+        }
+        
+        if(!value.match(/^[a-zA-Z]*$/)){
+            ERR.innerHTML="ONLY ALPHABETS ARE ALLOWED"
+            return false;
+        }
+        ERR.innerHTML=""
+        return true;
+    }
+    function validStreet(){
+        let value=document.getElementById('f4').value
+        let ERR=document.getElementById('ERR_4')
+        if(value==""){
+        ERR.innerHTML="PLEASE FILL THE FIELDS"
+        return false;
+        }
+        ERR.innerHTML=""
+        return true;
+    }
+    function validAP(){
+        let value=document.getElementById('f5').value
+        let ERR=document.getElementById('ERR_5')
+        if(value==""){
+        ERR.innerHTML="PLEASE FILL THE FIELDS"
+        return false;
+        }
+        ERR.innerHTML=""
+        return true;
+    }
+    function validCity(){
+        let value=document.getElementById('f6').value
+        let ERR=document.getElementById('ERR_6')
+        if(value==""){
+        ERR.innerHTML="PLEASE FILL THE FIELDS"
+        return false;
+        }
+        ERR.innerHTML=""
+        return true;
+    }
+    function validPhone(){
+        let value=document.getElementById('f9').value
+        let ERR=document.getElementById('ERR_9')
+        if(value==""){
+        ERR.innerHTML="PLEASE FILL THE FIELDS"
+        return false;
+        }
+        if(!value.match(/^\d{10}$/)){
+        ERR.innerHTML="Enter Valid Number"
+        return false;
+        }
+        ERR.innerHTML=""
+        return true;
+    }
+    function validEmail(){
+        let value=document.getElementById('f10').value
+        let ERR=document.getElementById('ERR_10')
+        if(value==""){
+        ERR.innerHTML="PLEASE FILL THE FIELDS"
+        return false;
+        }
+        if(!value.match(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/)){
+        messg.innerHTML="Please enter valid email"
+        return false;
+        }
+        ERR.innerHTML=""
+        return true;
+    }
+    function validation(){
+    if(!valid()||!validPass()||!validEmail()||!validPH()){
+     return false;
+     }
+    return true;
+ 
+}
+</script>

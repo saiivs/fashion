@@ -1,9 +1,11 @@
 var express = require('express');
+const { compileETag } = require('express/lib/utils');
 const async = require('hbs/lib/async');
 const { route } = require('.');
 
 var router = express.Router();
 var helper = require('../helper/func')
+require('dotenv').config()
 
 function verify(req, res, next) {
   if (req.session.adminLog) {
@@ -29,20 +31,47 @@ router.get('/', function (req, res, next) {
   }
 
 });
-Credential = {
-  username: "sai",
-  Password: 12345
-}
+// let a=process.env.userName
+// let b=process.env.Pass
+
+// Credential = {
+//   username: a,
+//   Password: b
+// }
 router.get('/AdminPanel', async (req, res) => {
   if (req.session.adminLog) {
     let report = await helper.getTotalReport()
     let monthly = await helper.getMonthReport()
+    let daily = await helper.getDailyReport()
+    let CountCod=0
+    let Countpay=0
+    let Countrazor=0
+    let cod = 0
+    let Razor = 0
+    let Paypal = 0
+    let dailyTotal=0
+    for (let i of daily) {
+      if (i._id == 'COD') {
+        cod = i.total
+        dailyTotal=dailyTotal+i.total
+        CountCod=i.count
+      } else if (i._id == 'paypal') {
+        Paypal = i.total
+        dailyTotal=dailyTotal+i.total
+        Countpay=i.count
+      } else {
+        Razor = i.total
+        dailyTotal=dailyTotal+i.total
+        Countrazor=i.count
+      }
+    }
     let ARR = []
     let a = 0;
-    for (let k = 0; k < 12; k++) {
+    for (let k = 0; k <= 12; k++) {
       if (monthly[a]) {
         if (monthly[a]._id == k) {
-          ARR[k] = monthly[a].total;
+          ARR[k-1] = monthly[a].total;
+          ARR[k]=0
           a++
         }
         else {
@@ -53,6 +82,7 @@ router.get('/AdminPanel', async (req, res) => {
         ARR[k] = 0
       }
     }
+    console.log(ARR);
     let PassARR = [...ARR]
     let Cod = 0;
     let razor = 0
@@ -66,7 +96,9 @@ router.get('/AdminPanel', async (req, res) => {
         razor = i.total
       }
     }
-    res.render('admin/index', { admin: true, head: true, index: true, Cod, paypal, razor, monthly, PassARR });
+   
+    res.render('admin/index', { admin: true, head: true, index: true, Cod, paypal, razor, monthly, PassARR, cod, Paypal, Razor, dailyTotal, 
+      CountCod, Countpay, Countrazor });
   }
   else {
     res.redirect('/admin')
@@ -74,7 +106,7 @@ router.get('/AdminPanel', async (req, res) => {
 
 })
 router.post('/Panel', (req, res) => {
-  if (req.body.password == Credential.Password && req.body.username == Credential.username) {
+  if (req.body.password == process.env.Pass && req.body.username == process.env.Namee) {
     req.session.adminLog = true
     res.redirect('/admin/AdminPanel')
   }
@@ -252,6 +284,20 @@ router.post('/editcat/:id', (req, res) => {
 
 router.get('/orderList', verify, (req, res) => {
   helper.getOrderAdmin().then(async (order) => {
+    
+    let a=0
+    console.log(order[0].Quantity);
+    
+    for(let i of order){
+      a=0
+      for(let j of i.products){
+        j.quant=i.Quantity[a]
+        a++
+      }
+    }
+    console.log(order[0].products);
+    console.log(order[1].products);
+    console.log(order[2].products);
     if (req.session.cancel) {
       res.render('admin/orderList', { order, cancel: req.session.cancel })
     }
@@ -390,12 +436,17 @@ router.post('/takeReport', (req, res) => {
   let to = new Date(req.body.end)
   let month = to.getMonth()
   console.log(month);
-  // let ARR=['jan',"Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"]
-  // var A= ARR.at(month);
-  // console.log(A);
   helper.getDateReport(from, to).then((report) => {
-    // helper.getExact(report).then(())
     req.session.report = report;
+    console.log(report);
+    let b=0
+    for(let i of report){
+      b=0
+      for(let j of i.Product){
+        j.quant=i.Quantity[b]
+        b++
+      }
+    }
     res.redirect('/admin/Report')
   })
 })

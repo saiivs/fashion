@@ -391,3 +391,21 @@ $('#changePassword').submit((e)=>{
     })
 })
 
+ $('#addressPRO').submit((e)=>{
+    e.preventDefault()
+    $.ajax({
+        url:'/takeAddress',
+        data:$("#addressPRO").serialize(),
+        method:'post',
+        success:(response)=>{
+            if(response.status){
+                swal('UPDATED').then(()=>{
+                    location.reload()
+                })
+                
+            }
+            
+        }
+    })
+ })
+

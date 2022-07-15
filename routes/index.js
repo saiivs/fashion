@@ -43,7 +43,7 @@ function ok(req, res, next) {
 router.get('/', function (req, res, next) {
   helper.getBanner().then((banner) => {
     if (req.session.logedin) {
-
+      helper.getProducts().then((pro) => {
       helper.getCount(req.session.user._id).then(async (count) => {
         console.log(count);
 
@@ -61,9 +61,10 @@ router.get('/', function (req, res, next) {
          
         }
         // req.session.count=count
-        res.render('user/index', { value: true, user: true, acc, count, banner, heartRed });
+        res.render('user/index', { value: true, user: true, acc, count, banner, heartRed , pro});
         value = false;
       })
+    })
 
     }
     else {
@@ -86,7 +87,7 @@ router.get('/shop', ok, function (req, res) {
   console.log(SSID);
   helper.getProducts().then((pro) => {
     helper.getCatog().then(async (catog) => {
-
+      
       let acc = req.session.user
       if (req.session.help) {
         product = req.session.CatShow
@@ -94,6 +95,15 @@ router.get('/shop', ok, function (req, res) {
       else {
         product = pro
       }
+      for(let i of product){
+        if(i.offer!=0){
+          i.new=i.price-i.offer
+        }
+        else{
+          i.new=false
+        }
+      }
+      console.log(product);
       let heartRed = false
       if (req.session.logedin) {
         let ID = await helper.getlistId(req.session.user._id)
@@ -117,7 +127,7 @@ router.get('/shop', ok, function (req, res) {
         }
         }
        
-      res.render('user/shop', { valuea: true, user: true, product, acc, count: req.session.count, catog, heartRed });
+      res.render('user/shop', { valuea: true, user: true, product, acc, count: req.session.count, catog, heartRed});
       req.session.help = false;
       valuea = false;
     }).catch(() => {
@@ -438,7 +448,7 @@ router.post('/place-order', async (req, res) => {
     body.paymentMethod = req.body.paymentMethod
   }
   console.log(body);
-  helper.placeOrder(body, products, totalPrice).then((orderID) => {
+  helper.placeOrder(body, products, totalPrice, value).then((orderID) => {
     req.session.orderID = orderID
     let confirm = {
       ID: orderID,
@@ -505,6 +515,20 @@ router.get('/profile', verify, (req, res) => {
     res.send("error page found")
   }
 })
+
+router.get('/profileAddress',(req,res)=>{
+  helper.getAddressProfile(req.session.user._id).then((data)=>{
+    res.render('user/addressView',{data,user: true, acc })
+  })
+})
+
+router.post('/takeAddress',(req,res)=>{
+  helper.updateAddress(req.body).then((data)=>{
+    res.json({status:true})
+  })
+})
+
+
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.wishList>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

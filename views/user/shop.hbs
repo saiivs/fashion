@@ -119,7 +119,12 @@
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
                                     </div> --}}
-                                    <h5>₹{{this.price}}&nbsp;&nbsp;<span class="text-success" style="font-size: small;" >{{#if offername}}{{this.offername}}%{{/if}}</span></h5>
+                                    {{#if this.new}}
+                                     <h5 class="text-muted" style="text-decoration: line-through;">₹{{this.price}}&nbsp;&nbsp;</h5><span class="text-danger" style="font-size: small;">{{#if offername}}{{this.offername}}%{{/if}}</span>&nbsp;<span style="font-size: larger;" >₹{{this.new}}</span>
+                                    
+                                    {{else}}
+                                   <h5>₹{{this.price}}</h5>
+                                    {{/if}}
                                     <div class="product__color__select">
                                         <label for="pc-4">
                                             <input type="radio" id="pc-4">

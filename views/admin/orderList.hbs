@@ -173,25 +173,27 @@
                     <td>{{this.Email}}</td>
                     <td>{{this.mobile}}</td>
                     <td>{{this.Date}}</td>
+                    <td><button type="button" class="btn btn-primary rounded px-2 py-2" data-toggle="modal" data-target="#P{{this._id}}">
+                            VIEW PRODUCTS
+                        </button>
+                    </td>
 
-                    <td>{{#each products}}
+                    {{!-- <td>{{#each products}}
                         <div>{{inc @index}}.{{this.name}}</div>
                         {{/each}}
-                    </td>
+                    </td> --}}
 
                     <td>{{this.totalPrice}}</td>
                     <td class="text-center">{{this.paymentMethod}}</td>
                     {{#ifCound this.status "CANCEL"}}
-                    <td><a class="btn bg-danger px-2 py-1 rounded text-white" 
-                            >CANCELLED</a></td>
+                    <td><a class="btn bg-danger px-2 py-1 rounded text-white">CANCELLED</a></td>
                     {{else}}
                     {{#ifCound this.status "DELIVERED"}}
-                    <td><a class="btn bg-success px-2 py-1 rounded text-white" 
-                            >DELIEVERED</a></td>
+                    <td><a class="btn bg-success px-2 py-1 rounded text-white">DELIEVERED</a></td>
                     {{else}}
-                        
-                            <td> <select onchange="status(this.value,'{{this._id}}','{{this.user}}')" class="custom-select tm-select-accounts"
-                            id="category" name="offer">
+
+                    <td> <select onchange="status(this.value,'{{this._id}}','{{this.user}}')"
+                            class="custom-select tm-select-accounts" id="category" name="offer">
                             <option selected>{{this.status}}</option>
                             <option value="SHIPPED">SHIPPED</option>
                             <option value="CANCEL">CANCEL</option>
@@ -200,7 +202,7 @@
                             <option value="3">Trending</option> --}}
                         </select>
                     </td>
-                    
+
                     {{/ifCound}}
                     {{/ifCound}}
                 </tr>
@@ -209,6 +211,54 @@
 
             </tbody>
         </table>
+        {{#each order}}
+        <div class="modal fade" id="P{{this._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">PRODUCTS</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="contianer">
+                            <div class="row ">
+                                {{#each products}}
+                                <div class="col-lg-4">
+                                    <div><img  style="width: 50px;" src="/pro-img/{{this._id}}.jpg" alt=""></div>
+                                    <p>{{this.name}}&nbsp; <span>₹{{this.price}}</span></p>
+                                </div>
+                                <div class="col-lg-5">
+                                    <label for="">Quantity:{{this.quant}}</label>
+                                    <label for="">Coupon Applied:&nbsp;-₹{{../this.CouponPrice}}</label>
+                                    {{#ifCound offername null}}
+                                    <label for=""></label>
+                                    {{else}}
+                                    <label for="">Offer Applied:&nbsp;-₹{{this.offer}}</label>
+                                    {{/ifCound}}
+                                </div>
+                                <div class="col-lg-12">
+                                    <hr class="mt-2 mb-4"
+                                    style="height: 0; background-color: transparent; opacity: .75; border-top: 2px dashed #9e9e9e;">
+                                </div>
+                                {{/each}}
+                                <div class="justify-content-end">
+                                <div class="col-lg-12">
+                                    
+                                       <label for="">Total:{{this.totalPrice}}  </label>    
+                                    </div>
+                                    
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
     </section>
 
 

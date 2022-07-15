@@ -1,5 +1,4 @@
 const width_threshold = 480;
-
 function drawLineChart() {
   if ($("#lineChart").length) {
     ctxLine = document.getElementById("lineChart").getContext("2d");

@@ -6,22 +6,32 @@
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
-            <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">FAQs</a>
-            </div>
+            
             <div class="offcanvas__top__hover">
-                <span>Usd <i class="arrow_carrot-down"></i></span>
+                {{!-- <span>Usd <i class="arrow_carrot-down"></i></span>
                 <ul>
                     <li>USD</li>
                     <li>EUR</li>
                     <li>USD</li>
-                </ul>
+                </ul> --}}
             </div>
         </div>
         <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
-            <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+            <div class="offcanvas__links">
+                <div class="header__top__hover">
+                                <span class="text-dark">{{#if acc}}{{acc.username}}{{else}}Account{{/if}}<i class="arrow_carrot-down"></i></span>
+                                <ul>
+                                    {{#if acc}}
+                                    <li><a href="/logout">LOGOUT</a></li>
+                                    <li><a href="/profile">PROFILE</a></li>
+                                    {{else}}
+                                    <li><a href="/login-user">LOGIN</a></li>
+                                    {{/if}}
+                                   
+                                </ul>
+                            </div>
+            </div>
+             <a href="/wishlistpage">{{#if heartRed}}<img id="heart" style="width: 1.5rem;" src="/img/icon/Colorheart.png" alt="">{{else}}<img id="heart" src="/img/icon/heart.png" alt="">{{/if}}<span class="badge  badge-white pt-2 ml-1" id="wishList">{{countW}}</span></a>
             {{!-- <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a> --}}
             {{!-- <div class="price">$0.00</div> --}}
         </div>

@@ -32,7 +32,7 @@ module.exports = {
 
     getData: () => {
         return new Promise((res, rej) => {
-            let user = db.get().collection('userdata').find().toArray()
+            let user = db.get().collection('userdata').find().sort({_id:-1}).toArray()
             if(user){
                 res(user)
             }else{
@@ -462,7 +462,7 @@ module.exports = {
 
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>address details>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-    placeOrder: (order, products, total) => {
+    placeOrder: (order, products, total, value) => {
         console.log("hai order");
         console.log(order);
         return new Promise((res, rej) => {
@@ -488,6 +488,7 @@ module.exports = {
                 user: objectId(order.user),
                 products: products,
                 totalPrice: total,
+                CouponPrice:value,
                 paymentMethod: order.paymentMethod,
                 date: year + "-" + month + "-" + day,
                 Time: Time,
@@ -648,6 +649,24 @@ module.exports = {
             res(order)
         })
     },
+
+    getAddressProfile:(id)=>{
+        return new Promise((res,rej)=>{
+            db.get().collection(collections.ADDRESS).find({user:id}).toArray().then((data)=>{
+                res(data)
+            })
+        })
+    },
+
+    updateAddress:(body)=>{
+        return new Promise((res,rej)=>{
+            db.get().collection(collections.ADDRESS).updateOne({_id:objectId(body.AID)},{$set:{name:body.name,country:body.country,STaddress:body.STaddress,APaddress:body.APaddress,Town_city:body.Town_city,email:body.email,phone:body.phone}}).then((done)=>{
+                res(done)
+            })
+        })
+
+    },
+
     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>orderList>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
     getOrderAdmin: () => {
@@ -664,7 +683,10 @@ module.exports = {
                         mobile: '$deliveryDetails.mobile',
                         totalPrice: '$totalPrice',
                         Email: '$email',
-                        DELIVERED: '$Delivered'
+                        DELIVERED: '$Delivered',
+                        Quantity:'$products.quantity',
+                        CouponPrice:1
+
                     }
                 },
                 {
@@ -685,10 +707,10 @@ module.exports = {
                 },
                 {
                     $project: {
-                        paymentMethod: 1, DELIVERED: 1, status: 1, Date: 1, items: 1, products: 1, totalPrice: 1, quantity: 1, name: 1, mobile: 1, Email: 1, Names: 1, user: 1
+                        paymentMethod: 1, DELIVERED: 1, status: 1, Date: 1, items: 1, products: 1, totalPrice: 1, quantity: 1, name: 1, mobile: 1, Email: 1, Names: 1, user: 1, Quantity:1,  CouponPrice:1
                     }
                 }
-            ]).sort({ _id: -1 }).toArray()
+            ]).sort({_id:-1}).toArray()
             console.log('ithan sanam');
             console.log(order);
             res(order)
@@ -853,8 +875,8 @@ module.exports = {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "http://localhost:3000/success",
-                    "cancel_url": "http://localhost:3000/cancel"
+                    "return_url": "https://www.saiivs.com/success",
+                    "cancel_url": "https://www.saiivs.com/cancel"
                 },
                 "transactions": [{
                     "item_list": {
@@ -1267,6 +1289,23 @@ module.exports = {
                     $match: { Time: { $gte: From, $lte: To } }
                 },
                 {
+                    $project: {
+                        paymentMethod: '$paymentMethod',
+                        name: '$deliveryDetails.name',
+                        status: '$status',
+                        user: '$user',
+                        Date: '$date',
+                        items: '$products.item',
+                        mobile: '$deliveryDetails.mobile',
+                        totalPrice: '$totalPrice',
+                        Email: '$email',
+                        DELIVERED: '$Delivered',
+                        Quantity:'$products.quantity',
+                        CouponPrice:1
+
+                    }
+                },
+                {
                     $lookup: {
                         from: collections.UDATA,
                         localField: 'user',
@@ -1277,9 +1316,14 @@ module.exports = {
                 {
                     $lookup: {
                         from: collections.PRODATA,
-                        localField: 'products.item',
+                        localField: 'items',
                         foreignField: '_id',
                         as: 'Product'
+                    }
+                },
+                {
+                    $project: {
+                        paymentMethod: 1, DELIVERED: 1, status: 1, Date: 1, items: 1, Product: 1, totalPrice: 1, quantity: 1, name: 1, mobile: 1, Email: 1, Name: 1, user: 1, Quantity:1,  CouponPrice:1
                     }
                 }
             ]).toArray()
@@ -1309,6 +1353,30 @@ module.exports = {
             ]).sort({ _id: 1 }).toArray()
             res(A)
             console.log(A);
+        })
+    },
+
+    getDailyReport:()=>{
+        return new Promise(async(res,rej)=>{
+            var date = new Date()
+            var month = date.getUTCMonth() + 1
+            var day = date.getUTCDate()
+            var year = date.getUTCFullYear()
+            let Daily=year + "-" + month + "-" + day
+
+           let data=await db.get().collection(collections.ORDER).aggregate([
+                {
+                    $match:{date:Daily}
+                },
+                {
+                    $group: {
+                        _id: "$paymentMethod", total: { $sum: "$totalPrice" }, count: {$sum:1}
+                    }
+                }
+            ]).sort({ _id: 1 }).toArray()
+               console.log(data);
+               res(data)
+           
         })
     },
 
