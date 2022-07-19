@@ -41,7 +41,7 @@ app.use((req,res,next)=>{
   }
   next();
 })
-app.use(session({secret:"key",cookie:{maxAge:600000}}))
+app.use(session({secret:"key"}))
 db.connect((err)=>{
   if(err) console.log("error");
   else console.log("Database connected to 27017");

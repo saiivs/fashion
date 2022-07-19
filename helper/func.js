@@ -875,8 +875,8 @@ module.exports = {
                     "payment_method": "paypal"
                 },
                 "redirect_urls": {
-                    "return_url": "https://www.saiivs.com/success",
-                    "cancel_url": "https://www.saiivs.com/cancel"
+                    "return_url": "https://saiivs.com/success",
+                    "cancel_url": "https://saiivs.com/cancel"
                 },
                 "transactions": [{
                     "item_list": {
