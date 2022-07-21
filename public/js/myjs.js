@@ -390,22 +390,25 @@ $('#changePassword').submit((e)=>{
         }
     })
 })
-
- $('#addressPRO').submit((e)=>{
-    e.preventDefault()
-    $.ajax({
-        url:'/takeAddress',
-        data:$("#addressPRO").serialize(),
-        method:'post',
-        success:(response)=>{
-            if(response.status){
-                swal('UPDATED').then(()=>{
-                    location.reload()
-                })
-                
-            }
-            
-        }
+function b(id){
+    $('#addressPRO'+id).submit((e)=>{
+      e.preventDefault()
+       $.ajax({
+           url:'/takeAddress',
+           data:$("#addressPRO"+id).serialize(),
+           method:'post',
+           success:(response)=>{
+               if(response.status){
+                   swal('UPDATED').then(()=>{
+                    //    location.reload()
+                    document.getElementById('into'+id).click()
+                    document.getElementById('hai'+id).innerHTML=response.value.name+'<br>'+response.value.country+','+response.value.STaddress+'<br>'+response.value.APaddress+','+response.value.Town_city+'<br>'+response.value.number+','+response.value.email;
+                   })
+                   
+               }
+               
+           }
+       })
     })
- })
+   }
 

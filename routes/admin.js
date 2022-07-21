@@ -388,7 +388,7 @@ router.get('/applyOffer', verify, (req, res) => {
     helper.getOffer().then((offer) => {
       // console.log('checkingggggggggggggggg');
       // console.log(offer);
-      res.render('admin/applyoffers', { pro, offer })
+      res.render('admin/applyoffers', { pro, offer }) 
     })
   })
 })

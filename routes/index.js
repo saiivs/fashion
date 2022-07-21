@@ -522,9 +522,11 @@ router.get('/profileAddress',(req,res)=>{
   })
 })
 
-router.post('/takeAddress',(req,res)=>{
+router.post('/takeAddress',(req,res)=>{   
+ console.log('3232323232323');
+ console.log(req.body);
   helper.updateAddress(req.body).then((data)=>{
-    res.json({status:true})
+    res.json({status:true,value:req.body})
   })
 })
 

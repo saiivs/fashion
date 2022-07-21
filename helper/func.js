@@ -659,6 +659,8 @@ module.exports = {
     },
 
     updateAddress:(body)=>{
+        console.log('999999999999');
+        console.log(body.AID);
         return new Promise((res,rej)=>{
             db.get().collection(collections.ADDRESS).updateOne({_id:objectId(body.AID)},{$set:{name:body.name,country:body.country,STaddress:body.STaddress,APaddress:body.APaddress,Town_city:body.Town_city,email:body.email,phone:body.phone}}).then((done)=>{
                 res(done)

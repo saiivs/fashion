@@ -43,7 +43,7 @@
                                 </td>
                                 <td class="product__cart__item">
                                     <div class="product__cart__item__text px-5">
-                                        <h6>{{this.name}}<br>{{this.country}},{{this.STaddress}}<br>{{this.APaddress}},{{this.Town_city}}<br>{{this.email}},{{this.phone}}
+                                        <h6 id="hai{{this._id}}">{{this.name}}<br>{{this.country}},{{this.STaddress}}<br>{{this.APaddress}},{{this.Town_city}}<br>{{this.email}},{{this.phone}}
                                         </h6>
 
                                     </div>
@@ -77,20 +77,20 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">EDIT</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <button type="button" id="into{{this._id}}" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form id="addressPRO" >
+                                <form id="addressPRO{{this._id}}" >
                                 <div class="modal-body">
                                     <div class="col-lg-12 col-md-6">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="checkout__input">
-                                                    <p>Name<span>*</span><span class="text-danger" id="ERR_1"></span>
+                                                    <p>Name<span>*</span><span class="text-danger" id="ERR_1{{this._id}}"></span>
                                                     </p>
-                                                    <input type="text" id="f1" class="text-dark" name="name"
-                                                        value="{{this.name}}" onkeyup="validName()">
+                                                    <input type="text" id="f1{{this._id}}" class="text-dark" name="name"
+                                                        value="{{this.name}}" onkeyup="validName('{{this._id}}')">
                                                     <input type="text"  class="text-dark" name="AID"
                                                         value="{{this._id}}" hidden>
 
@@ -98,25 +98,25 @@
                                             </div>
                                         </div>
                                         <div class="checkout__input">
-                                            <p>Country<span>*</span><span class="text-danger" id="ERR_3"></span></p>
-                                            <input type="text" id="f3" name="country" value="{{this.country}}"
-                                                class="text-dark" onkeyup="validCountry()">
+                                            <p>Country<span>*</span><span class="text-danger" id="ERR_3{{this._id}}"></span></p>
+                                            <input type="text" id="f3{{this._id}}" name="country" value="{{this.country}}"
+                                                class="text-dark" onkeyup="validCountry('{{this._id}}')">
 
                                         </div>
                                         <div class="checkout__input">
-                                            <p>Address<span>*</span><span class="text-danger" id="ERR_4"></span></p>
+                                            <p>Address<span>*</span><span class="text-danger" id="ERR_4{{this._id}}"></span></p>
                                             <input type="text" placeholder="Street Address" value="{{this.STaddress}}"
-                                                class="text-dark" id="f4" onkeyup="validStreet()" name="STaddress"
+                                                class="text-dark" id="f4{{this._id}}" onkeyup="validStreet('{{this._id}}')" name="STaddress"
                                                 class="checkout__input__add">
-                                            <span class="text-danger" id="ERR_5"></span>
+                                            <span class="text-danger" id="ERR_5{{this._id}}"></span>
                                             <input type="text" name="APaddress" value="{{this.APaddress}}"
-                                                class="text-dark" id="f5" onkeyup="validAP()"
+                                                class="text-dark" id="f5{{this._id}}" onkeyup="validAP('{{this._id}}')"
                                                 placeholder="Apartment, suite, unite ect (optinal)">
 
                                         </div>
                                         <div class="checkout__input">
-                                            <p>Town/City<span>*</span><span class="text-danger" id="ERR_6"></span></p>
-                                            <input type="text" id="f6" class="text-dark" onkeyup="validCity()"
+                                            <p>Town/City<span>*</span><span class="text-danger" id="ERR_6{{this._id}}"></span></p>
+                                            <input type="text" id="f6{{this._id}}" class="text-dark" onkeyup="validCity('{{this._id}}')"
                                                 name="Town_city" value="{{this.Town_city}}">
 
                                         </div>
@@ -124,18 +124,18 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="checkout__input">
-                                                    <p>Phone<span>*</span><span class="text-danger" id="ERR_9"></span>
+                                                    <p>Phone<span>*</span><span class="text-danger" id="ERR_9{{this._id}}"></span>
                                                     </p>
-                                                    <input type="number" class="text-dark" id="f9"
-                                                        onkeyup="validPhone()" name="phone" value="{{this.phone}}">
+                                                    <input type="number" class="text-dark" id="f9{{this._id}}"
+                                                        onkeyup="validPhone('{{this._id}}')" name="phone" value="{{this.phone}}">
 
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="checkout__input">
-                                                    <p>Email<span>*</span><span class="text-danger" id="ERR_10"></span>
+                                                    <p>Email<span>*</span><span class="text-danger" id="ERR_10{{this._id}}"></span>
                                                     </p>
-                                                    <input type="text" id="f10" onkeyup="validEmail()" name="email"
+                                                    <input type="text" id="f10{{this._id}}" onkeyup="validEmail('{{this._id}}')" name="email"
                                                         value="{{this.email}}">
 
                                                 </div>
@@ -145,13 +145,13 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button  type="submit" class="btn btn-primary">Save changes</button>
+                                    <button  type="submit"  onclick="return validation('{{this._id}}')" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                             </form>
                         </div>
                     </div>
-                    {{/each}}
+                    {{/each}} 
                 </div>
             </div>
         </div>
@@ -159,12 +159,14 @@
 </section>
 
 <script>
-    function validName(){
-        let value=document.getElementById('f1').value
-        let ERR=document.getElementById('ERR_1')
-        if(value=="")
+   
+    function validName(id){
+        let value=document.getElementById('f1'+id).value
+        let ERR=document.getElementById('ERR_1'+id)
+        if(value==""){
         ERR.innerHTML="PLEASE FILL THE FIELDS"
         return false;
+        }
         if(!value.match(/^[a-zA-Z]*$/)){
             ERR.innerHTML="ONLY ALPHABETS ARE ALLOWED"
             return false;
@@ -172,9 +174,9 @@
         ERR.innerHTML=""
         return true;
     }
-    function validCountry(){
-        let value=document.getElementById('f3').value
-        let ERR=document.getElementById('ERR_3')
+    function validCountry(id){
+        let value=document.getElementById('f3'+id).value
+        let ERR=document.getElementById('ERR_3'+id)
         if(value==""){
         ERR.innerHTML="PLEASE FILL THE FIELDS"
         return false;
@@ -187,9 +189,9 @@
         ERR.innerHTML=""
         return true;
     }
-    function validStreet(){
-        let value=document.getElementById('f4').value
-        let ERR=document.getElementById('ERR_4')
+    function validStreet(id){
+        let value=document.getElementById('f4'+id).value
+        let ERR=document.getElementById('ERR_4'+id)
         if(value==""){
         ERR.innerHTML="PLEASE FILL THE FIELDS"
         return false;
@@ -197,9 +199,9 @@
         ERR.innerHTML=""
         return true;
     }
-    function validAP(){
-        let value=document.getElementById('f5').value
-        let ERR=document.getElementById('ERR_5')
+    function validAP(id){
+        let value=document.getElementById('f5'+id).value
+        let ERR=document.getElementById('ERR_5'+id)
         if(value==""){
         ERR.innerHTML="PLEASE FILL THE FIELDS"
         return false;
@@ -207,9 +209,9 @@
         ERR.innerHTML=""
         return true;
     }
-    function validCity(){
-        let value=document.getElementById('f6').value
-        let ERR=document.getElementById('ERR_6')
+    function validCity(id){
+        let value=document.getElementById('f6'+id).value
+        let ERR=document.getElementById('ERR_6'+id)
         if(value==""){
         ERR.innerHTML="PLEASE FILL THE FIELDS"
         return false;
@@ -217,9 +219,9 @@
         ERR.innerHTML=""
         return true;
     }
-    function validPhone(){
-        let value=document.getElementById('f9').value
-        let ERR=document.getElementById('ERR_9')
+    function validPhone(id){
+        let value=document.getElementById('f9'+id).value
+        let ERR=document.getElementById('ERR_9'+id)
         if(value==""){
         ERR.innerHTML="PLEASE FILL THE FIELDS"
         return false;
@@ -231,9 +233,9 @@
         ERR.innerHTML=""
         return true;
     }
-    function validEmail(){
-        let value=document.getElementById('f10').value
-        let ERR=document.getElementById('ERR_10')
+    function validEmail(id){
+        let value=document.getElementById('f10'+id).value
+        let ERR=document.getElementById('ERR_10'+id)
         if(value==""){
         ERR.innerHTML="PLEASE FILL THE FIELDS"
         return false;
@@ -245,11 +247,12 @@
         ERR.innerHTML=""
         return true;
     }
-    function validation(){
-    if(!valid()||!validPass()||!validEmail()||!validPH()){
+    function validation(id){
+         console.log('666666666666')
+    if(!validName(id)||!validCountry(id)||!validStreet(id)||!validAP(id)||!validCity(id)||!validPhone(id)||!validEmail(id)){
+        console.log('5254556699')
      return false;
      }
-    return true;
- 
+     b(id)
 }
 </script>
